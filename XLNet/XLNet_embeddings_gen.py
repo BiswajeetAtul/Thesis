@@ -20,7 +20,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 # %%
 import torch
-torch.cuda.is_available()
+print(torch.cuda.is_available())
 
 
 # %%
@@ -105,7 +105,7 @@ model = AutoModel.from_pretrained('xlnet-base-cased')
 def get_Encodings(text,tokenizer=tokenizer,model=model, verbose=False):
     if verbose:
         print("Text:")
-        print(text[:20] + "....")
+    print(text[:20] + "....")
     # if the sequence lenght is too big we trim it to 250
     encoded = tokenizer.encode(text)
     
@@ -144,10 +144,9 @@ def get_Encodings(text,tokenizer=tokenizer,model=model, verbose=False):
             print("Sample from Output[1], first hidden layer:")
             print(outputs[1][0])
             print("Sample shape, first hidden layer")
-            
     if verbose:
         print("getting the last tensor for XLNet")
-        print(outputs[0].squeeze()[-1])
+    #print(outputs[0].squeeze()[-1][0:10])
     return outputs[0].squeeze()[-1]
 
 
@@ -202,7 +201,7 @@ tokenizer.encode("In May 1980, a Cuban man named Tony Montana (Al Pacino) claims
 # Now We run the model for each text we have in our Dataset 
 
 # %%
-
+print("Starting the Embedding generation for Type 1")
 
 
 # %%
@@ -212,46 +211,59 @@ print(start_time)
 
 
 # %%
-#For Type 1 Embeddings
-xlnet_embeddings_t1=getXLNetEmbeddings(mpstDF_processsed,"processed_synopsis_t1_short")
+# For Type 1 Embeddings
+xlnet_embeddings_t1 = getXLNetEmbeddings(mpstDF_processsed,"processed_synopsis_t1_short")
 
+print("End of the Embedding generation for Type 1")
 
 # %%
-print("Shape: ",xlnet_embeddings_t1.shape)
+print("Shape: ", xlnet_embeddings_t1.shape)
 print("XL Embedding for Type 1")
 print(xlnet_embeddings_t1)
 
+print("Saving the Embedding generation for Type 1")
 
 # %%
-np.savez("xl_embeddings_type1.npz",xlnet_embeddings_t1)
+np.savez("xl_embeddings_type1.npz", xlnet_embeddings_t1)
+print("Saved!")
+
+# %%
+print("Starting the Embedding generation for Type 2")
+
+# For Type 2 Embeddings
+xlnet_embeddings_t2 = getXLNetEmbeddings(mpstDF_processsed, "processed_synopsis_t2_short")
 
 
 # %%
-#For Type 2 Embeddings
-xlnet_embeddings_t2=getXLNetEmbeddings(mpstDF_processsed,"processed_synopsis_t2_short")
+print("Ending the Embedding generation for Type 2")
 
-
-# %%
-print("Shape: ",xlnet_embeddings_t2.shape)
+print("Shape: ", xlnet_embeddings_t2.shape)
 print("Embedding")
 print(xlnet_embeddings_t2)
+
 
 # %%
 print("--- %s seconds ---" % (time.time() - start_time))
 
 # %%
-np.savez("xl_embeddings_type1.npz",xlnet_embeddings_t2)
+print("Saving the Embedding generation for Type 2")
+
+np.savez("xl_embeddings_type2.npz", xlnet_embeddings_t2)
+print("Saved!")
 
 # %% [markdown]
 # Saved the embeddings in different files
 # Now saving them in the same file
 
 # %%
-np.savez("xl_embeddings.npz",t1=xlnet_embeddings_t1,t2=xlnet_embeddings_t2)
+print("Saving the Embedding generation for both Types")
+
+np.savez("xl_embeddings.npz", t1=xlnet_embeddings_t1,t2=xlnet_embeddings_t2)
+print("Saved!")
 
 
 # %%
-em_check=np.load("xl_embeddings.npz")
+em_check = np.load("xl_embeddings.npz")
 print("t1")
 print(em_check["t1"])
 print(em_check["t1"].shape)
