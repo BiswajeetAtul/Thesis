@@ -248,3 +248,53 @@ class ELM_MultiLabel:
         print(metricTable)
 
         return HammingLoss, accuracy, precision, recall, f1
+
+
+#Validation
+
+for i in list_of_models_hidden_nodes:
+    print( "t1_"   +str(i)+"_bipolar_sigmoid_val_start \n")
+    time_log["t1_" +str(i)+"_bipolar_sigmoid_val_start"]=time.time()
+    predicted, eval_dict=t1_models["t1_"+str(i)+"_bipolar_sigmoid"].predict(type1_BERT_Embeddings_Val,label_values_Val, show_metrics=True)
+    time_log["t1_" +str(i)+"_bipolar_sigmoid_val_end"]=time.time()
+
+    add_data_to_metric_list(eval_dict, "_bipolar_sigmoid", "type1_BERT_Embeddings_Val", time_log["t1_" +str(i)+"_bipolar_sigmoid_val_start"], "val", time_log["t1_" +str(i)+"_bipolar_sigmoid_val_end"])
+
+
+    print( "t1_"   +str(i)+"_relu_leaky_val_start \n")
+    time_log["t1_" +str(i)+"_relu_leaky_val_start"]=time.time()
+    predicted, eval_dict=t1_models["t1_"+str(i)+"_relu_leaky"].predict(type1_BERT_Embeddings_Val,label_values_Val, show_metrics=True)
+    time_log["t1_" +str(i)+"_relu_leaky_val_end"]=time.time()
+
+    add_data_to_metric_list(eval_dict, "_relu_leaky", "type1_BERT_Embeddings_Val", time_log["t1_" +str(i)+"_relu_leaky_val_start"], "val", time_log["t1_" +str(i)+"_relu_leaky_val_end"])
+
+
+    print( "t1_"   +str(i)+"_biploar_step_val_start \n")
+    time_log["t1_" +str(i)+"_biploar_step_val_start"]=time.time()
+    predicted, eval_dict=t1_models["t1_"+str(i)+"_biploar_step"].predict(type1_BERT_Embeddings_Val,label_values_Val, show_metrics=True)
+    time_log["t1_" +str(i)+"_biploar_step_val_end"]=time.time()
+
+    add_data_to_metric_list(eval_dict, "_biploar_step", "type1_BERT_Embeddings_Val", time_log["t1_" +str(i)+"_biploar_step_val_start"], "val", time_log["t1_" +str(i)+"_biploar_step_val_end"])
+
+
+    print( "t2_"   +str(i)+"_bipolar_sigmoid_val_start \n")
+    time_log["t2_" +str(i)+"_bipolar_sigmoid_val_start"]=time.time()
+    predicted, eval_dict=t2_models["t2_"+str(i)+"_bipolar_sigmoid"].predict(type2_BERT_Embeddings_Val,label_values_Val, show_metrics=True)
+    time_log["t2_" +str(i)+"_bipolar_sigmoid_val_end"]=time.time()
+
+    add_data_to_metric_list(eval_dict, "_bipolar_sigmoid", "type2_BERT_Embeddings_Val", time_log["t2_" +str(i)+"_bipolar_sigmoid_val_start"], "val", time_log["t2_" +str(i)+"_bipolar_sigmoid_val_end"])
+
+
+    print( "t2_"   +str(i)+"_relu_leaky_val_start \n")
+    time_log["t2_" +str(i)+"_relu_leaky_val_start"]=time.time()
+    predicted, eval_dict=t2_models["t2_"+str(i)+"_relu_leaky"].predict(type2_BERT_Embeddings_Val,label_values_Val, show_metrics=True)
+    time_log["t2_" +str(i)+"_relu_leaky_val_end"]=time.time()
+
+    add_data_to_metric_list(eval_dict, "_relu_leaky", "type2_BERT_Embeddings_Val", time_log["t2_" +str(i)+"_relu_leaky_val_start"], "val", time_log["t2_" +str(i)+"_relu_leaky_val_end"])
+
+    print( "t2_"   +str(i)+"_biploar_step_val_start \n")
+    time_log["t2_" +str(i)+"_biploar_step_val_start"]=time.time()
+    predicted, eval_dict=t2_models["t2_"+str(i)+"_biploar_step"].predict(type2_BERT_Embeddings_Val,label_values_Val, show_metrics=True)
+    time_log["t2_" +str(i)+"_biploar_step_val_end"]=time.time()
+
+    add_data_to_metric_list(eval_dict, "_biploar_step", "type2_BERT_Embeddings_Val", time_log["t2_" +str(i)+"_biploar_step_val_start"], "val", time_log["t2_" +str(i)+"_biploar_step_val_end"])
