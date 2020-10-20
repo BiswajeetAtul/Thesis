@@ -1,0 +1,698 @@
+t1_bert_100__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.044    |             |
+|     Precision      |    0.056    |    0.623    |
+|       Recall       |    0.012    |    0.092    |
+|     F1-measure     |    0.015    |    0.160    |
++--------------------+-------------+-------------+
+t1_bert_100__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.041    |             |
+| Term Wise Accuracy |    0.959    |             |
+|      Accuracy      |    0.031    |             |
+|     Precision      |    0.079    |    0.604    |
+|       Recall       |    0.009    |    0.072    |
+|     F1-measure     |    0.013    |    0.129    |
++--------------------+-------------+-------------+
+t1_bert_100__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.041    |             |
+| Term Wise Accuracy |    0.959    |             |
+|      Accuracy      |    0.039    |             |
+|     Precision      |    0.135    |    0.613    |
+|       Recall       |    0.011    |    0.084    |
+|     F1-measure     |    0.015    |    0.148    |
++--------------------+-------------+-------------+
+t1_bert_100__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.039    |             |
+|     Precision      |    0.047    |    0.621    |
+|       Recall       |    0.011    |    0.087    |
+|     F1-measure     |    0.014    |    0.152    |
++--------------------+-------------+-------------+
+t1_bert_100__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.041    |             |
+| Term Wise Accuracy |    0.959    |             |
+|      Accuracy      |    0.034    |             |
+|     Precision      |    0.055    |    0.597    |
+|       Recall       |    0.009    |    0.077    |
+|     F1-measure     |    0.012    |    0.136    |
++--------------------+-------------+-------------+
+t1_bert_200__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.051    |             |
+|     Precision      |    0.080    |    0.639    |
+|       Recall       |    0.014    |    0.106    |
+|     F1-measure     |    0.018    |    0.182    |
++--------------------+-------------+-------------+
+t1_bert_200__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.042    |             |
+|     Precision      |    0.053    |    0.618    |
+|       Recall       |    0.011    |    0.088    |
+|     F1-measure     |    0.015    |    0.154    |
++--------------------+-------------+-------------+
+t1_bert_200__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.044    |             |
+|     Precision      |    0.077    |    0.622    |
+|       Recall       |    0.012    |    0.091    |
+|     F1-measure     |    0.017    |    0.159    |
++--------------------+-------------+-------------+
+t1_bert_200__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.050    |             |
+|     Precision      |    0.119    |    0.636    |
+|       Recall       |    0.013    |    0.101    |
+|     F1-measure     |    0.017    |    0.175    |
++--------------------+-------------+-------------+
+t1_bert_200__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.044    |             |
+|     Precision      |    0.080    |    0.623    |
+|       Recall       |    0.012    |    0.093    |
+|     F1-measure     |    0.015    |    0.162    |
++--------------------+-------------+-------------+
+t1_bert_300__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.059    |             |
+|     Precision      |    0.087    |    0.654    |
+|       Recall       |    0.015    |    0.113    |
+|     F1-measure     |    0.020    |    0.193    |
++--------------------+-------------+-------------+
+t1_bert_300__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.048    |             |
+|     Precision      |    0.150    |    0.636    |
+|       Recall       |    0.013    |    0.096    |
+|     F1-measure     |    0.017    |    0.167    |
++--------------------+-------------+-------------+
+t1_bert_300__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.054    |             |
+|     Precision      |    0.151    |    0.650    |
+|       Recall       |    0.014    |    0.106    |
+|     F1-measure     |    0.019    |    0.182    |
++--------------------+-------------+-------------+
+t1_bert_300__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.057    |             |
+|     Precision      |    0.174    |    0.657    |
+|       Recall       |    0.016    |    0.114    |
+|     F1-measure     |    0.021    |    0.194    |
++--------------------+-------------+-------------+
+t1_bert_300__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.050    |             |
+|     Precision      |    0.093    |    0.636    |
+|       Recall       |    0.014    |    0.105    |
+|     F1-measure     |    0.018    |    0.180    |
++--------------------+-------------+-------------+
+t1_bert_400__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.039    |             |
+| Term Wise Accuracy |    0.961    |             |
+|      Accuracy      |    0.064    |             |
+|     Precision      |    0.088    |    0.664    |
+|       Recall       |    0.017    |    0.125    |
+|     F1-measure     |    0.023    |    0.210    |
++--------------------+-------------+-------------+
+t1_bert_400__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.050    |             |
+|     Precision      |    0.123    |    0.645    |
+|       Recall       |    0.014    |    0.105    |
+|     F1-measure     |    0.018    |    0.181    |
++--------------------+-------------+-------------+
+t1_bert_400__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.061    |             |
+|     Precision      |    0.376    |    0.651    |
+|       Recall       |    0.017    |    0.116    |
+|     F1-measure     |    0.024    |    0.197    |
++--------------------+-------------+-------------+
+t1_bert_400__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.060    |             |
+|     Precision      |    0.169    |    0.655    |
+|       Recall       |    0.016    |    0.118    |
+|     F1-measure     |    0.022    |    0.200    |
++--------------------+-------------+-------------+
+t1_bert_400__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.057    |             |
+|     Precision      |    0.178    |    0.654    |
+|       Recall       |    0.016    |    0.114    |
+|     F1-measure     |    0.021    |    0.195    |
++--------------------+-------------+-------------+
+t1_bert_500__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.039    |             |
+| Term Wise Accuracy |    0.961    |             |
+|      Accuracy      |    0.068    |             |
+|     Precision      |    0.120    |    0.668    |
+|       Recall       |    0.019    |    0.130    |
+|     F1-measure     |    0.026    |    0.218    |
++--------------------+-------------+-------------+
+t1_bert_500__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.040    |             |
+| Term Wise Accuracy |    0.960    |             |
+|      Accuracy      |    0.058    |             |
+|     Precision      |    0.219    |    0.653    |
+|       Recall       |    0.016    |    0.115    |
+|     F1-measure     |    0.022    |    0.196    |
++--------------------+-------------+-------------+
+t1_bert_500__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.039    |             |
+| Term Wise Accuracy |    0.961    |             |
+|      Accuracy      |    0.060    |             |
+|     Precision      |    0.145    |    0.662    |
+|       Recall       |    0.017    |    0.121    |
+|     F1-measure     |    0.022    |    0.205    |
++--------------------+-------------+-------------+
+t1_bert_500__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.039    |             |
+| Term Wise Accuracy |    0.961    |             |
+|      Accuracy      |    0.069    |             |
+|     Precision      |    0.287    |    0.666    |
+|       Recall       |    0.019    |    0.128    |
+|     F1-measure     |    0.027    |    0.215    |
++--------------------+-------------+-------------+
+t1_bert_500__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.039    |             |
+| Term Wise Accuracy |    0.961    |             |
+|      Accuracy      |    0.065    |             |
+|     Precision      |    0.361    |    0.656    |
+|       Recall       |    0.018    |    0.122    |
+|     F1-measure     |    0.025    |    0.205    |
++--------------------+-------------+-------------+
+t1_bert_1000__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.235    |    0.693    |
+|       Recall       |    0.024    |    0.152    |
+|     F1-measure     |    0.034    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_1000__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.077    |             |
+|     Precision      |    0.473    |    0.699    |
+|       Recall       |    0.026    |    0.152    |
+|     F1-measure     |    0.038    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_1000__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.082    |             |
+|     Precision      |    0.459    |    0.702    |
+|       Recall       |    0.028    |    0.159    |
+|     F1-measure     |    0.041    |    0.259    |
++--------------------+-------------+-------------+
+t1_bert_1000__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.088    |             |
+|     Precision      |    0.518    |    0.712    |
+|       Recall       |    0.031    |    0.168    |
+|     F1-measure     |    0.046    |    0.272    |
++--------------------+-------------+-------------+
+t1_bert_1000__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.444    |    0.700    |
+|       Recall       |    0.028    |    0.159    |
+|     F1-measure     |    0.040    |    0.259    |
++--------------------+-------------+-------------+
+t1_bert_2000__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.235    |    0.693    |
+|       Recall       |    0.024    |    0.152    |
+|     F1-measure     |    0.034    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_2000__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.035    |             |
+| Term Wise Accuracy |    0.965    |             |
+|      Accuracy      |    0.126    |             |
+|     Precision      |    0.735    |    0.771    |
+|       Recall       |    0.062    |    0.245    |
+|     F1-measure     |    0.095    |    0.371    |
++--------------------+-------------+-------------+
+t1_bert_2000__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.034    |             |
+| Term Wise Accuracy |    0.966    |             |
+|      Accuracy      |    0.129    |             |
+|     Precision      |    0.774    |    0.773    |
+|       Recall       |    0.070    |    0.255    |
+|     F1-measure     |    0.109    |    0.383    |
++--------------------+-------------+-------------+
+t1_bert_2000__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.034    |             |
+| Term Wise Accuracy |    0.966    |             |
+|      Accuracy      |    0.133    |             |
+|     Precision      |    0.832    |    0.782    |
+|       Recall       |    0.080    |    0.261    |
+|     F1-measure     |    0.127    |    0.391    |
++--------------------+-------------+-------------+
+t1_bert_2000__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.035    |             |
+| Term Wise Accuracy |    0.965    |             |
+|      Accuracy      |    0.126    |             |
+|     Precision      |    0.761    |    0.770    |
+|       Recall       |    0.069    |    0.250    |
+|     F1-measure     |    0.108    |    0.378    |
++--------------------+-------------+-------------+
+t1_bert_3000__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.235    |    0.693    |
+|       Recall       |    0.024    |    0.152    |
+|     F1-measure     |    0.034    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_3000__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.030    |             |
+| Term Wise Accuracy |    0.970    |             |
+|      Accuracy      |    0.181    |             |
+|     Precision      |    0.933    |    0.832    |
+|       Recall       |    0.143    |    0.358    |
+|     F1-measure     |    0.222    |    0.501    |
++--------------------+-------------+-------------+
+t1_bert_3000__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.029    |             |
+| Term Wise Accuracy |    0.971    |             |
+|      Accuracy      |    0.192    |             |
+|     Precision      |    0.965    |    0.839    |
+|       Recall       |    0.157    |    0.369    |
+|     F1-measure     |    0.245    |    0.512    |
++--------------------+-------------+-------------+
+t1_bert_3000__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.029    |             |
+| Term Wise Accuracy |    0.971    |             |
+|      Accuracy      |    0.206    |             |
+|     Precision      |    0.963    |    0.845    |
+|       Recall       |    0.186    |    0.386    |
+|     F1-measure     |    0.287    |    0.530    |
++--------------------+-------------+-------------+
+t1_bert_3000__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.029    |             |
+| Term Wise Accuracy |    0.971    |             |
+|      Accuracy      |    0.191    |             |
+|     Precision      |    0.922    |    0.838    |
+|       Recall       |    0.149    |    0.367    |
+|     F1-measure     |    0.230    |    0.510    |
++--------------------+-------------+-------------+
+t1_bert_4000__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.235    |    0.693    |
+|       Recall       |    0.024    |    0.152    |
+|     F1-measure     |    0.034    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_4000__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.023    |             |
+| Term Wise Accuracy |    0.977    |             |
+|      Accuracy      |    0.280    |             |
+|     Precision      |    0.983    |    0.889    |
+|       Recall       |    0.321    |    0.515    |
+|     F1-measure     |    0.463    |    0.652    |
++--------------------+-------------+-------------+
+t1_bert_4000__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.022    |             |
+| Term Wise Accuracy |    0.978    |             |
+|      Accuracy      |    0.302    |             |
+|     Precision      |    0.984    |    0.895    |
+|       Recall       |    0.343    |    0.529    |
+|     F1-measure     |    0.489    |    0.665    |
++--------------------+-------------+-------------+
+t1_bert_4000__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.022    |             |
+| Term Wise Accuracy |    0.978    |             |
+|      Accuracy      |    0.318    |             |
+|     Precision      |    0.984    |    0.897    |
+|       Recall       |    0.374    |    0.541    |
+|     F1-measure     |    0.525    |    0.675    |
++--------------------+-------------+-------------+
+t1_bert_4000__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.022    |             |
+| Term Wise Accuracy |    0.978    |             |
+|      Accuracy      |    0.296    |             |
+|     Precision      |    0.983    |    0.895    |
+|       Recall       |    0.338    |    0.526    |
+|     F1-measure     |    0.483    |    0.662    |
++--------------------+-------------+-------------+
+t1_bert_5000__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.235    |    0.693    |
+|       Recall       |    0.024    |    0.152    |
+|     F1-measure     |    0.034    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_5000__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.014    |             |
+| Term Wise Accuracy |    0.986    |             |
+|      Accuracy      |    0.460    |             |
+|     Precision      |    0.988    |    0.934    |
+|       Recall       |    0.640    |    0.717    |
+|     F1-measure     |    0.772    |    0.811    |
++--------------------+-------------+-------------+
+t1_bert_5000__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.014    |             |
+| Term Wise Accuracy |    0.986    |             |
+|      Accuracy      |    0.466    |             |
+|     Precision      |    0.988    |    0.933    |
+|       Recall       |    0.631    |    0.713    |
+|     F1-measure     |    0.764    |    0.808    |
++--------------------+-------------+-------------+
+t1_bert_5000__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.014    |             |
+| Term Wise Accuracy |    0.986    |             |
+|      Accuracy      |    0.479    |             |
+|     Precision      |    0.988    |    0.937    |
+|       Recall       |    0.622    |    0.707    |
+|     F1-measure     |    0.758    |    0.806    |
++--------------------+-------------+-------------+
+t1_bert_5000__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.014    |             |
+| Term Wise Accuracy |    0.986    |             |
+|      Accuracy      |    0.469    |             |
+|     Precision      |    0.987    |    0.933    |
+|       Recall       |    0.635    |    0.714    |
+|     F1-measure     |    0.768    |    0.809    |
++--------------------+-------------+-------------+
+t1_bert_10000__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.235    |    0.693    |
+|       Recall       |    0.024    |    0.152    |
+|     F1-measure     |    0.034    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_10000__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.002    |             |
+| Term Wise Accuracy |    0.998    |             |
+|      Accuracy      |    0.934    |             |
+|     Precision      |    0.985    |    0.984    |
+|       Recall       |    0.963    |    0.968    |
+|     F1-measure     |    0.974    |    0.976    |
++--------------------+-------------+-------------+
+t1_bert_10000__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.002    |             |
+| Term Wise Accuracy |    0.998    |             |
+|      Accuracy      |    0.935    |             |
+|     Precision      |    0.978    |    0.976    |
+|       Recall       |    0.970    |    0.976    |
+|     F1-measure     |    0.974    |    0.976    |
++--------------------+-------------+-------------+
+t1_bert_10000__relu_leaky_uniform
+SELECTED _relu_leaky
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.002    |             |
+| Term Wise Accuracy |    0.998    |             |
+|      Accuracy      |    0.934    |             |
+|     Precision      |    0.980    |    0.980    |
+|       Recall       |    0.968    |    0.972    |
+|     F1-measure     |    0.974    |    0.976    |
++--------------------+-------------+-------------+
+t1_bert_10000__binary_sigmoid_uniform
+SELECTED _binary_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.002    |             |
+| Term Wise Accuracy |    0.998    |             |
+|      Accuracy      |    0.934    |             |
+|     Precision      |    0.992    |    0.983    |
+|       Recall       |    0.955    |    0.968    |
+|     F1-measure     |    0.973    |    0.976    |
++--------------------+-------------+-------------+
+t1_bert_15000__identity_uniform
+SELECTED _identity
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.038    |             |
+| Term Wise Accuracy |    0.962    |             |
+|      Accuracy      |    0.081    |             |
+|     Precision      |    0.235    |    0.692    |
+|       Recall       |    0.024    |    0.152    |
+|     F1-measure     |    0.034    |    0.249    |
++--------------------+-------------+-------------+
+t1_bert_15000__biploar_step_uniform
+SELECTED _biploar_step
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.002    |             |
+| Term Wise Accuracy |    0.998    |             |
+|      Accuracy      |    0.934    |             |
+|     Precision      |    0.990    |    0.981    |
+|       Recall       |    0.958    |    0.971    |
+|     F1-measure     |    0.973    |    0.976    |
++--------------------+-------------+-------------+
+t1_bert_15000__bipolar_sigmoid_uniform
+SELECTED _bipolar_sigmoid
++--------------------+-------------+-------------+
+|       Metric       | Macro Value | Micro Value |
++--------------------+-------------+-------------+
+|    Hamming Loss    |    0.002    |             |
+| Term Wise Accuracy |    0.998    |             |
+|      Accuracy      |    0.934    |             |
+|     Precision      |    0.987    |    0.982    |
+|       Recall       |    0.961    |    0.969    |
+|     F1-measure     |    0.973    |    0.976    |
++--------------------+-------------+-------------+
+t1_bert_15000__relu_leaky_uniform
+SELECTED _relu_leaky
