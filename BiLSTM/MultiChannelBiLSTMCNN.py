@@ -1,7 +1,7 @@
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
 # %%
-from IPython import get_ipython
+# from IPython import get_ipython
 
 # %%
 import prettytable
@@ -29,15 +29,15 @@ import datetime
 
 
 # %%
-if tf.test.gpu_device_name(): 
-    print('Default GPU Device:{}'.format(tf.test.gpu_device_name()))
-else:
-    print("Please install GPU version of TF")
+# if tf.test.gpu_device_name(): 
+#     print('Default GPU Device:{}'.format(tf.test.gpu_device_name()))
+# else:
+#     print("Please install GPU version of TF")
 
 
 # %%
 # Loading Tensorboard Extension
-get_ipython().run_line_magic('load_ext', 'tensorboard')
+# get_ipython().run_line_magic('load_ext', 'tensorboard')
 
 
 # %%
@@ -103,133 +103,133 @@ def step_cyclic(epoch):
 # Loading Data
 
 # %%
-mpstDF= pd.read_csv("mpst.csv")
-mpstDF
+# mpstDF= pd.read_csv("mpst.csv")
+# mpstDF
 
 
-# %%
-# Data Split Function
-def get_partition_Embeddings(x_t1,x_t2,y,df,partition_nm):
-    _df=df[df["split"]==partition_nm]
-    index_list=list(_df.index)
-    temp_array_x_t1=[]
-    temp_array_x_t2=[]
-    temp_array_y=[]
-    for index in index_list:
-        temp_array_x_t1.append(x_t1[index,:])
-        temp_array_x_t2.append(x_t2[index,:])
-        temp_array_y.append(y[index,:])
-    temp_array_x_t1=np.array(temp_array_x_t1)
-    temp_array_x_t2=np.array(temp_array_x_t2)
-    temp_array_y=np.array(temp_array_y)
-    return temp_array_x_t1,temp_array_x_t2, temp_array_y
+# # %%
+# # Data Split Function
+# def get_partition_Embeddings(x_t1,x_t2,y,df,partition_nm):
+#     _df=df[df["split"]==partition_nm]
+#     index_list=list(_df.index)
+#     temp_array_x_t1=[]
+#     temp_array_x_t2=[]
+#     temp_array_y=[]
+#     for index in index_list:
+#         temp_array_x_t1.append(x_t1[index,:])
+#         temp_array_x_t2.append(x_t2[index,:])
+#         temp_array_y.append(y[index,:])
+#     temp_array_x_t1=np.array(temp_array_x_t1)
+#     temp_array_x_t2=np.array(temp_array_x_t2)
+#     temp_array_y=np.array(temp_array_y)
+#     return temp_array_x_t1,temp_array_x_t2, temp_array_y
 
 
-# %%
-# LOADING BERT  EMBEDDINGS
-bert_embedding=np.load(r"D:\CodeRepo\Thesis\Thesis\XLNet\xl_embeddings.npz")
-# LOADING XLnet EMBEDDINGS
-xl_embedding=np.load(r"D:\CodeRepo\Thesis\Thesis\XLNet\xl_embeddings.npz")
-# LOADING LABELS Y
-label_values=np.load(r"D:\CodeRepo\Thesis\Thesis\EDA\Y.npz")
+# # %%
+# # LOADING BERT  EMBEDDINGS
+# bert_embedding=np.load(r"D:\CodeRepo\Thesis\Thesis\XLNet\xl_embeddings.npz")
+# # LOADING XLnet EMBEDDINGS
+# xl_embedding=np.load(r"D:\CodeRepo\Thesis\Thesis\XLNet\xl_embeddings.npz")
+# # LOADING LABELS Y
+# label_values=np.load(r"D:\CodeRepo\Thesis\Thesis\EDA\Y.npz")
 
 
-# %%
-# BERT EMBEDDINGS T1 & T2
-type1_BERT_Embeddings=bert_embedding["t1"]
-type2_BERT_Embeddings=bert_embedding["t2"]
-# XLNet EMBEDDINGS T1 & T2
-type1_XL_Embeddings=xl_embedding["t1"]
-type2_XL_Embeddings=xl_embedding["t2"]
-# LABLES Y
-label_values=label_values["arr_0"]
+# # %%
+# # BERT EMBEDDINGS T1 & T2
+# type1_BERT_Embeddings=bert_embedding["t1"]
+# type2_BERT_Embeddings=bert_embedding["t2"]
+# # XLNet EMBEDDINGS T1 & T2
+# type1_XL_Embeddings=xl_embedding["t1"]
+# type2_XL_Embeddings=xl_embedding["t2"]
+# # LABLES Y
+# label_values=label_values["arr_0"]
 
 
-# %%
-# BERT
+# # %%
+# # BERT
 
-# FOR TRAIN
-type1_BERT_Embeddings_Train,type2_BERT_Embeddings_Train,BERT_label_values_Train=get_partition_Embeddings(type1_BERT_Embeddings,type2_BERT_Embeddings,label_values,mpstDF,"train")
-# FOR VALIDATION
-type1_BERT_Embeddings_Val,type2_BERT_Embeddings_Val,BERT_label_values_Val=get_partition_Embeddings(type1_BERT_Embeddings,type2_BERT_Embeddings,label_values,mpstDF,"val")
-# FOR TEST
-type1_BERT_Embeddings_Test,type2_BERT_Embeddings_Test,BERT_label_values_Test=get_partition_Embeddings(type1_BERT_Embeddings,type2_BERT_Embeddings,label_values,mpstDF,"test")
-
-
-# %%
-# XLNET
-
-# FOR TRAIN
-type1_XL_Embeddings_Train,type2_XL_Embeddings_Train,XLNET_label_values_Train=get_partition_Embeddings(type1_XL_Embeddings,type2_XL_Embeddings,label_values,mpstDF,"train")
-# FOR VALIDATION
-type1_XL_Embeddings_Val,type2_XL_Embeddings_Val,XLNET_label_values_Val=get_partition_Embeddings(type1_XL_Embeddings,type2_XL_Embeddings,label_values,mpstDF,"val")
-# FOR TEST
-type1_XL_Embeddings_Test,type2_XL_Embeddings_Test,XLNET_label_values_Test=get_partition_Embeddings(type1_XL_Embeddings,type2_XL_Embeddings,label_values,mpstDF,"test")
+# # FOR TRAIN
+# type1_BERT_Embeddings_Train,type2_BERT_Embeddings_Train,BERT_label_values_Train=get_partition_Embeddings(type1_BERT_Embeddings,type2_BERT_Embeddings,label_values,mpstDF,"train")
+# # FOR VALIDATION
+# type1_BERT_Embeddings_Val,type2_BERT_Embeddings_Val,BERT_label_values_Val=get_partition_Embeddings(type1_BERT_Embeddings,type2_BERT_Embeddings,label_values,mpstDF,"val")
+# # FOR TEST
+# type1_BERT_Embeddings_Test,type2_BERT_Embeddings_Test,BERT_label_values_Test=get_partition_Embeddings(type1_BERT_Embeddings,type2_BERT_Embeddings,label_values,mpstDF,"test")
 
 
-# HAVING A LOOK AT THE SHAPES OF EACH PARTITION CREATED:
+# # %%
+# # XLNET
 
-# %%
-print("SHAPES OF EACH PARTITION _ BERT\n")
-print("type1_BERT_Embeddings_Train.shape: ", type1_BERT_Embeddings_Train.shape)
-print("type2_BERT_Embeddings_Train.shape: ", type2_BERT_Embeddings_Train.shape)
-print("BERT_label_values_Train.shape: "    , BERT_label_values_Train.shape)
-
-print("type1_BERT_Embeddings_Val.shape: ", type1_BERT_Embeddings_Val.shape)
-print("type2_BERT_Embeddings_Val.shape: ", type2_BERT_Embeddings_Val.shape)
-print("BERT_label_values_Val.shape: "    , BERT_label_values_Val.shape)
-
-print("type1_BERT_Embeddings_Test.shape: ", type1_BERT_Embeddings_Test.shape)
-print("type2_BERT_Embeddings_Test.shape: ", type2_BERT_Embeddings_Test.shape)
-print("BERT_label_values_Test.shape: "    , BERT_label_values_Test.shape)
-
-print("SHAPES OF EACH PARTITION _ XLNET\n")
-
-print("type1_XL_Embeddings_Train.shape: ", type1_XL_Embeddings_Train.shape)
-print("type2_XL_Embeddings_Train.shape: ", type2_XL_Embeddings_Train.shape)
-print("XLNET_label_values_Train.shape: " , XLNET_label_values_Train.shape)
-
-print("type1_XL_Embeddings_Val.shape: ", type1_XL_Embeddings_Val.shape)
-print("type2_XL_Embeddings_Val.shape: ", type2_XL_Embeddings_Val.shape)
-print("XLNET_label_values_Val.shape: " , XLNET_label_values_Val.shape)
-
-print("type1_XL_Embeddings_Test.shape: ", type1_XL_Embeddings_Test.shape)
-print("type2_XL_Embeddings_Test.shape: ", type2_XL_Embeddings_Test.shape)
-print("XLNET_label_values_Test.shape: " , XLNET_label_values_Test.shape)
-
-print("SHAPES OF EACH PARTITION _ BERT\n")
-print("type1_BERT_Embeddings_Train.: ", type1_BERT_Embeddings_Train)
-print("type2_BERT_Embeddings_Train.: ", type2_BERT_Embeddings_Train)
-print("BERT_label_values_Train.: "    , BERT_label_values_Train)
-
-print("type1_BERT_Embeddings_Val.: ", type1_BERT_Embeddings_Val)
-print("type2_BERT_Embeddings_Val.: ", type2_BERT_Embeddings_Val)
-print("BERT_label_values_Val.: "    , BERT_label_values_Val)
-
-print("type1_BERT_Embeddings_Test.shape: ", type1_BERT_Embeddings_Test)
-print("type2_BERT_Embeddings_Test.shape: ", type2_BERT_Embeddings_Test)
-print("BERT_label_values_Test.shape: "    , BERT_label_values_Test)
-
-print("SHAPES OF EACH PARTITION _ XLNET\n")
-
-print("type1_XL_Embeddings_Train: ", type1_XL_Embeddings_Train)
-print("type2_XL_Embeddings_Train: ", type2_XL_Embeddings_Train)
-print("XLNET_label_values_Train: " , XLNET_label_values_Train)
-
-print("type1_XL_Embeddings_Val: ", type1_XL_Embeddings_Val)
-print("type2_XL_Embeddings_Val: ", type2_XL_Embeddings_Val)
-print("XLNET_label_values_Val: " , XLNET_label_values_Val)
-
-print("type1_XL_Embeddings_Test: ", type1_XL_Embeddings_Test)
-print("type2_XL_Embeddings_Test: ", type2_XL_Embeddings_Test)
-print("XLNET_label_values_Test: " , XLNET_label_values_Test)
+# # FOR TRAIN
+# type1_XL_Embeddings_Train,type2_XL_Embeddings_Train,XLNET_label_values_Train=get_partition_Embeddings(type1_XL_Embeddings,type2_XL_Embeddings,label_values,mpstDF,"train")
+# # FOR VALIDATION
+# type1_XL_Embeddings_Val,type2_XL_Embeddings_Val,XLNET_label_values_Val=get_partition_Embeddings(type1_XL_Embeddings,type2_XL_Embeddings,label_values,mpstDF,"val")
+# # FOR TEST
+# type1_XL_Embeddings_Test,type2_XL_Embeddings_Test,XLNET_label_values_Test=get_partition_Embeddings(type1_XL_Embeddings,type2_XL_Embeddings,label_values,mpstDF,"test")
 
 
-# %%
-# function to reshape my input
-def tensor_reshape(input, timestep, features):
-  reshaped= input.reshape(type1_BERT_Embeddings_Train.shape[0], timestep, features)
-  return reshaped
+# # HAVING A LOOK AT THE SHAPES OF EACH PARTITION CREATED:
+
+# # %%
+# print("SHAPES OF EACH PARTITION _ BERT\n")
+# print("type1_BERT_Embeddings_Train.shape: ", type1_BERT_Embeddings_Train.shape)
+# print("type2_BERT_Embeddings_Train.shape: ", type2_BERT_Embeddings_Train.shape)
+# print("BERT_label_values_Train.shape: "    , BERT_label_values_Train.shape)
+
+# print("type1_BERT_Embeddings_Val.shape: ", type1_BERT_Embeddings_Val.shape)
+# print("type2_BERT_Embeddings_Val.shape: ", type2_BERT_Embeddings_Val.shape)
+# print("BERT_label_values_Val.shape: "    , BERT_label_values_Val.shape)
+
+# print("type1_BERT_Embeddings_Test.shape: ", type1_BERT_Embeddings_Test.shape)
+# print("type2_BERT_Embeddings_Test.shape: ", type2_BERT_Embeddings_Test.shape)
+# print("BERT_label_values_Test.shape: "    , BERT_label_values_Test.shape)
+
+# print("SHAPES OF EACH PARTITION _ XLNET\n")
+
+# print("type1_XL_Embeddings_Train.shape: ", type1_XL_Embeddings_Train.shape)
+# print("type2_XL_Embeddings_Train.shape: ", type2_XL_Embeddings_Train.shape)
+# print("XLNET_label_values_Train.shape: " , XLNET_label_values_Train.shape)
+
+# print("type1_XL_Embeddings_Val.shape: ", type1_XL_Embeddings_Val.shape)
+# print("type2_XL_Embeddings_Val.shape: ", type2_XL_Embeddings_Val.shape)
+# print("XLNET_label_values_Val.shape: " , XLNET_label_values_Val.shape)
+
+# print("type1_XL_Embeddings_Test.shape: ", type1_XL_Embeddings_Test.shape)
+# print("type2_XL_Embeddings_Test.shape: ", type2_XL_Embeddings_Test.shape)
+# print("XLNET_label_values_Test.shape: " , XLNET_label_values_Test.shape)
+
+# print("SHAPES OF EACH PARTITION _ BERT\n")
+# print("type1_BERT_Embeddings_Train.: ", type1_BERT_Embeddings_Train)
+# print("type2_BERT_Embeddings_Train.: ", type2_BERT_Embeddings_Train)
+# print("BERT_label_values_Train.: "    , BERT_label_values_Train)
+
+# print("type1_BERT_Embeddings_Val.: ", type1_BERT_Embeddings_Val)
+# print("type2_BERT_Embeddings_Val.: ", type2_BERT_Embeddings_Val)
+# print("BERT_label_values_Val.: "    , BERT_label_values_Val)
+
+# print("type1_BERT_Embeddings_Test.shape: ", type1_BERT_Embeddings_Test)
+# print("type2_BERT_Embeddings_Test.shape: ", type2_BERT_Embeddings_Test)
+# print("BERT_label_values_Test.shape: "    , BERT_label_values_Test)
+
+# print("SHAPES OF EACH PARTITION _ XLNET\n")
+
+# print("type1_XL_Embeddings_Train: ", type1_XL_Embeddings_Train)
+# print("type2_XL_Embeddings_Train: ", type2_XL_Embeddings_Train)
+# print("XLNET_label_values_Train: " , XLNET_label_values_Train)
+
+# print("type1_XL_Embeddings_Val: ", type1_XL_Embeddings_Val)
+# print("type2_XL_Embeddings_Val: ", type2_XL_Embeddings_Val)
+# print("XLNET_label_values_Val: " , XLNET_label_values_Val)
+
+# print("type1_XL_Embeddings_Test: ", type1_XL_Embeddings_Test)
+# print("type2_XL_Embeddings_Test: ", type2_XL_Embeddings_Test)
+# print("XLNET_label_values_Test: " , XLNET_label_values_Test)
+
+
+# # %%
+# # function to reshape my input
+# def tensor_reshape(input, timestep, features):
+#   reshaped= input.reshape(type1_BERT_Embeddings_Train.shape[0], timestep, features)
+#   return reshaped
 
 
 # %%
@@ -285,15 +285,81 @@ CONV_2T_KERNEL = 2
 
 LSTM_2_C_L_UNITS = 128
 
+OUTPUT_DENSE_UNIT =128
+OUTPUT_SIZE = 71
+
 # %%
 class BalanceNet(object):
     """
     docstring
     """
-    def __init__(self, parameter_list):
+    def __init__(self,
+                INPUT_SHAPE,
+                EM_L_F_UNITS,
+                EM_L_T_UNITS,
+                LSTM_1F_UNITS,
+                LSTM_1T_UNITS,
+                CONV_2_FILTER,
+                CONV_2_KERNEL,
+                CONV_3_FILTER,
+                CONV_3_KERNEL,
+                CONV_5_FILTER,
+                CONV_5_KERNEL,
+                CONV_6_FILTER,
+                CONV_6_KERNEL,
+                CONV_8_FILTER,
+                CONV_8_KERNEL,
+                CONV_4F_FILTERS = 12,
+                CONV_4F_KERNEL=2,
+                CONV_4T_FILTERS = 12,
+                CONV_4T_KERNEL = 2,
+                CONV_3F_FILTERS = 12,
+                CONV_3F_KERNEL = 2,
+                CONV_3T_FILTERS = 12,
+                CONV_3T_KERNEL = 2,
+                CONV_2F_FILTERS = 12,
+                CONV_2F_KERNEL = 2,
+                CONV_2T_FILTERS = 12,
+                CONV_2T_KERNEL=2,
+                LSTM_2_C_L_UNITS=128,
+                OUTPUT_DENSE_UNIT=128,
+                OUTPUT_SIZE=71,
+                optimizer_name= 'adam'):
+        """__init__ [summary]
+
+        Args:
+            INPUT_SHAPE ([type]): [description]
+            EM_L_F_UNITS ([type]): [description]
+            EM_L_T_UNITS ([type]): [description]
+            LSTM_1F_UNITS ([type]): [description]
+            LSTM_1T_UNITS ([type]): [description]
+            CONV_2_FILTER ([type]): [description]
+            CONV_2_KERNEL ([type]): [description]
+            CONV_3_FILTER ([type]): [description]
+            CONV_3_KERNEL ([type]): [description]
+            CONV_5_FILTER ([type]): [description]
+            CONV_5_KERNEL ([type]): [description]
+            CONV_6_FILTER ([type]): [description]
+            CONV_6_KERNEL ([type]): [description]
+            CONV_8_FILTER ([type]): [description]
+            CONV_8_KERNEL ([type]): [description]
+            CONV_4F_FILTERS (int, optional): [description]. Defaults to 12.
+            CONV_4F_KERNEL (int, optional): [description]. Defaults to 2.
+            CONV_4T_FILTERS (int, optional): [description]. Defaults to 12.
+            CONV_4T_KERNEL (int, optional): [description]. Defaults to 2.
+            CONV_3F_FILTERS (int, optional): [description]. Defaults to 12.
+            CONV_3F_KERNEL (int, optional): [description]. Defaults to 2.
+            CONV_3T_FILTERS (int, optional): [description]. Defaults to 12.
+            CONV_3T_KERNEL (int, optional): [description]. Defaults to 2.
+            CONV_2F_FILTERS (int, optional): [description]. Defaults to 12.
+            CONV_2F_KERNEL (int, optional): [description]. Defaults to 2.
+            CONV_2T_FILTERS (int, optional): [description]. Defaults to 12.
+            CONV_2T_KERNEL (int, optional): [description]. Defaults to 2.
+            LSTM_2_C_L_UNITS (int, optional): [description]. Defaults to 128.
+            OUTPUT_DENSE_UNIT (int, optional): [description]. Defaults to 128.
+            OUTPUT_SIZE (int, optional): [description]. Defaults to 71.
         """
-        CONSTRUCTOR
-        """
+        self.__input_shape =INPUT_SHAPE
         inp_layer = Input(shape=INPUT_SHAPE, dtype="float32")
         embedding_layer_frozen=TimeDistributed(Dense(EM_L_F_UNITS,  trainable= False))(inp_layer)
         embedding_layer_train= TimeDistributed(Dense(EM_L_T_UNITS,  trainable= True))(inp_layer)
@@ -357,116 +423,186 @@ class BalanceNet(object):
         # END LEFT CHANNEL
 
         # RIGHT CHANNEL
+        # ### CNN TO LSTM RIGHT CHANNEL
+        
+        # ### RIGHT CNN PART
+        conv_2 = []
+        l_conv_4f = Conv1D(filters= CONV_4F_FILTERS, kernel_size=CONV_4F_KERNEL, activation='relu', kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_frozen)
+        l_conv_4f = Dropout(0.3)(l_conv_4f)
+
+        l_conv_4t = Conv1D(filters= CONV_4T_FILTERS, kernel_size=CONV_4T_KERNEL, activation='relu', kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_train)
+        l_conv_4t = Dropout(0.3)(l_conv_4t)
+        conv_2.append(l_conv_4f)
+        conv_2.append(l_conv_4t)
+        print("l_conv_4f",l_conv_4f.shape)
+        print("l_conv_4t",l_conv_4t.shape)
+        
+        if CONV_3F_FILTERS!=0 and CONV_3T_FILTERS!=0:
+            l_conv_3f = Conv1D(filters= CONV_3F_FILTERS, kernel_size=CONV_3F_KERNEL, activation='relu')(embedding_layer_frozen)
+            l_conv_3f = Dropout(0.3)(l_conv_3f)
+
+            l_conv_3t = Conv1D(filters= CONV_3T_FILTERS, kernel_size=CONV_3T_KERNEL, activation='relu')(embedding_layer_train)
+            l_conv_3t = Dropout(0.3)(l_conv_3t)
+            conv_2.append(l_conv_3f)
+            conv_2.append(l_conv_3t)
+            print("l_conv_3f",l_conv_3f.shape)
+            print("l_conv_3t",l_conv_3t.shape)
+        
+        if CONV_2F_FILTERS!=0 and CONV_2T_FILTERS!=0:
+            l_conv_2f = Conv1D(filters= CONV_2F_FILTERS, kernel_size=CONV_2F_KERNEL, activation='relu')(embedding_layer_frozen)
+            l_conv_2f = Dropout(0.3)(l_conv_2f)
+
+            l_conv_2t = Conv1D(filters= CONV_2T_FILTERS, kernel_size=CONV_2T_KERNEL, activation='relu')(embedding_layer_train)
+            l_conv_2t = Dropout(0.3)(l_conv_2t)
+            conv_2.append(l_conv_2f)
+            conv_2.append(l_conv_2t)
+            print("l_conv_2f",l_conv_2f.shape)
+            print("l_conv_2t",l_conv_2t.shape)
+
+        l_merge_2 = Concatenate(axis=1)(conv_2)
+        print("l_merge_2",l_merge_2.shape)
+
+        # ### RIGHT LSTM PART
+        l_c_lstm = Bidirectional(LSTM(LSTM_2_C_L_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(l_merge_2)
+        print("l_c_lstm",l_c_lstm.shape)
+
+        # FINAL MERGER
+        l_merge = Concatenate(axis=1)([l_lstm_c, l_c_lstm])
+        l_pool = MaxPooling1D(4)(l_merge)
+        l_drop = Dropout(0.5)(l_pool)
+        l_flat = Flatten()(l_drop)
+        l_dense = Dense(OUTPUT_DENSE_UNIT, activation='sigmoid')(l_flat)
+        preds= Dense(71, activation='sigmoid')(l_dense)
+
+        self.model = Model(inp_layer, preds).to('cuda')
+        
+        
+        adadelta = optimizers.Adadelta(lr=0.9, rho=0.90, epsilon=None, decay=0.001)
+        lr_metric = get_lr_metric(adadelta)
+
+        if optimizer_name == 'adadelta':
+            optimizer_name = adadelta
+
+        self.model.compile( loss='categorical_crossentropy',
+                            optimizer=optimizer_name,
+                            metrics=[   "categorical_accuracy",
+                                        "top_k_categorical_accuracy",
+                                        tf.keras.metrics.Precision(),
+                                        tf.keras.metrics.Recall(),
+                                        tf.keras.metrics.TruePositives(),
+                                        tf.keras.metrics.TrueNegatives(),
+                                        tf.keras.metrics.FalsePositives(),
+                                        tf.keras.metrics.FalseNegatives()])
+        def __reshape_input(self, input, timestep, features):
+            """__reshape_input [summary]
+
+            Args:
+                input [tensor, ndarray]: input array to be reshaped
+                timestep ([integer]): No of timesteps to be considered
+                features ([integer]): No of features to be considered in each time step
+
+            Raises:
+                ex: [ValueError] WHEN THE NDARRAY CANT BE RESHAPED
+
+            Returns:
+                [tensor, ndarray]: reshaped
+            """
+            try:
+                batch_size = input.shape[0]
+                reshaped= input.reshape(batch_size, timestep, features)
+                return reshaped
+            except ValueError as ex:
+                raise ex
 
 
+        def fitModel(self, train_x, train_y, val_x, val_y, model_type, epochs_count, batch_count):
+            """fitModel [summary]
+
+            Args:
+                train_x ([type]): [description]
+                train_y ([type]): [description]
+                val_x ([type]): [description]
+                val_y ([type]): [description]
+                model_type ([type]): [description]
+                epochs_count ([type]): [description]
+                batch_count ([type]): [description]
+            """
+            try:
+                print("Training Progress:")
+                dt_time =datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+                log_dir = "logs/fit/" + dt_time
+                log_hist = "logs/hist/" + dt_time
+                modelSaveFileName = "best_model_"+ str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + dt_time + model_type + ".h5"
+                modelLogSaveFileName = log_hist+"model_log"+str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + dt_time+ model_type + ".csv"
 
 
-# %%
-inp_layer = Input(shape=INPUT_SHAPE, dtype="float32")
-embedding_layer_frozen=TimeDistributed(Dense(EM_L_F_UNITS,  trainable= False))(inp_layer)
-embedding_layer_train= TimeDistributed(Dense(EM_L_T_UNITS,  trainable= True))(inp_layer)
-print("inp_layer",inp_layer.shape)
-print("embedding_layer_frozen",embedding_layer_frozen.shape)
-print("embedding_layer_train",embedding_layer_train.shape)
+                tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+                earlyStopping_cb = callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=200)
+                modelChecpoint_cb = callbacks.ModelCheckpoint(modelSaveFileName, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
+                lr_schedule_cb = callbacks.LearningRateScheduler(initial_boost)
 
+                print("Reshaping input:")
+                X_train = self.__reshape_input(train_x,self.__input_shape[0], self.__input_shape[1])
+                X_val= self.__reshape_input(val_x,self.__input_shape[0], self.__input_shape[1])
 
-# ### LSTM TO CNN LEFT CHANNEL
+                # print(sum(np.isnan(X_train_)))
+                model_log = self.model.fit(X_train, train_y,
+                                        validation_data=(X_val, val_y),
+                                        epochs=epochs_count,
+                                        batch_size=batch_count,
+                                        callbacks=[tensorboard_cb, earlyStopping_cb, modelChecpoint_cb, lr_schedule_cb])
+                pd.DataFrame(model_log.history).to_csv(modelLogSaveFileName)
+                
+            except Exception as ex:
+                print(ex.with_traceback())
 
-# ### LEFT LSTM PART
+            def predictModel(self, test_x, test_y, threshold_list):
+                """predictModel predicts the model and evaluates it for various thresholds 
 
-# %%
-l_lstm_1f =Bidirectional(LSTM(LSTM_1F_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(embedding_layer_frozen)
-l_lstm_1t =Bidirectional(LSTM(LSTM_1T_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(embedding_layer_train)
+                Args:
+                    test_x ([ndarray]): test data set to be predicted
+                    test_y ([ndarray]): original labels set of the test dataset
 
-l_lstm1 = Concatenate(axis=1)([l_lstm_1f, l_lstm_1t])
-print("l_lstm_1f",l_lstm_1f.shape)
-print("l_lstm_1t",l_lstm_1t.shape)
-print("l_lstm1",l_lstm1.shape)
+                Returns:
+                    [ndarray]: [the predicted values from the model]
+                """
+                thresholds = threshold_list
+                
+                _test_x = self.__reshape_input(test_x, self.__input_shape[0], self.__input_shape[1])
+                real = test_y
+                predicted = self.model.predict(test_x)
+                for threshold in thresholds:
+                    print("At threshold of " + str(threshold))
+                    _predicted = predicted.copy()
+                    np.apply_along_axis(np.vectorize(lambda x: 1 if x> threshold else 0) ,axis=1)
 
+                    accuracy = accuracy_score(real, _predicted)
+                    hamLoss = hamming_loss(real, _predicted)
+                    # element wise correctness
+                    term_wise_accuracy = np.sum(np.logical_not(
+                        np.logical_xor(real, _predicted)))/real.size
 
-# ### LEFT CNN PART
+                    macro_precision = precision_score(real, _predicted, average='macro')
+                    macro_recall = recall_score(real, _predicted, average='macro')
+                    macro_f1 = f1_score(real, _predicted, average='macro')
 
-# %%
+                    micro_precision = precision_score(real, _predicted, average='micro')
+                    micro_recall = recall_score(real, _predicted, average='micro')
+                    micro_f1 = f1_score(real, _predicted, average='micro')
 
-l_conv_2 = Conv1D(filters=CONV_2_FILTER, kernel_size=CONV_2_KERNEL, activation='relu')(l_lstm1)
-l_conv_2 = Dropout(0.3)(l_conv_2)
+                    metricTable = prettytable.PrettyTable()
+                    metricTable.field_names = ["Metric", "Macro Value", "Micro Value"]
+                    metricTable.add_row(["Hamming Loss", "{0:.3f}".format(hamLoss), ""])
+                    metricTable.add_row(
+                        ["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
 
-# l_conv_3 = Conv1D(filters=CONV_3_FILTER, kernel_size=CONV_3_KERNEL, activation='relu')(l_lstm1)
-# l_conv_3 = Dropout(0.3)(l_conv_3)
+                    metricTable.add_row(["Accuracy", "{0:.3f}".format(accuracy), ""])
+                    metricTable.add_row(["Precision", "{0:.3f}".format(
+                        macro_precision), "{0:.3f}".format(micro_precision)])
+                    metricTable.add_row(["Recall", "{0:.3f}".format(
+                        macro_recall), "{0:.3f}".format(micro_recall)])
+                    metricTable.add_row(
+                        ["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
 
-# l_conv_5 = Conv1D(filters=CONV_5_FILTER, kernel_size=CONV_5_KERNEL, activation='relu')(l_lstm1)
-# l_conv_5 = Dropout(0.3)(l_conv_5)
-
-l_conv_6 = Conv1D(filters=CONV_6_FILTER, kernel_size=CONV_6_KERNEL, kernel_regularizer=regularizers.l2(0.001) ,activation='relu')(l_lstm1)
-l_conv_6 = Dropout(0.3)(l_conv_6)
-
-# l_conv_8 = Conv1D(filters=CONV_8_FILTER, kernel_size=CONV_8_KERNEL, kernel_regularizer=regularizers.l2(0.001) ,activation='relu')(l_lstm1)
-# l_conv_8 = Dropout(0.3)(l_conv_8)
-
-# conv_1 =[l_conv_6, l_conv_5, l_conv_8, l_conv_2, l_conv_3 ]
-conv_1 =[l_conv_6, l_conv_2 ]
-
-l_lstm_c = Concatenate(axis =1)(conv_1)
-print("l_conv_2",l_conv_2.shape)
-print("l_conv_6",l_conv_6.shape)
-print("l_lstm_c",l_lstm_c.shape)
-
-
-# ### CNN TO LSTM RIGHT CHANNEL
-
-# ### RIGHT CNN PART
-
-# %%
-# CNN TO LSTM
-l_conv_4f = Conv1D(filters= CONV_4F_FILTERS, kernel_size=CONV_4F_KERNEL, activation='relu', kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_frozen)
-l_conv_4f = Dropout(0.3)(l_conv_4f)
-
-l_conv_4t = Conv1D(filters= CONV_4T_FILTERS, kernel_size=CONV_4T_KERNEL, activation='relu', kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_train)
-l_conv_4t = Dropout(0.3)(l_conv_4t)
-
-l_conv_3f = Conv1D(filters= CONV_3F_FILTERS, kernel_size=CONV_3F_KERNEL, activation='relu')(embedding_layer_frozen)
-l_conv_3f = Dropout(0.3)(l_conv_3f)
-
-l_conv_3t = Conv1D(filters= CONV_3T_FILTERS, kernel_size=CONV_3T_KERNEL, activation='relu')(embedding_layer_train)
-l_conv_3t = Dropout(0.3)(l_conv_3t)
-
-# l_conv_2f = Conv1D(filters= CONV_2F_FILTERS, kernel_size=CONV_2F_KERNEL, activation='relu')(embedding_layer_frozen)
-# l_conv_2f = Dropout(0.3)(l_conv_2f)
-
-# l_conv_2t = Conv1D(filters= CONV_2T_FILTERS, kernel_size=CONV_2T_KERNEL, activation='relu')(embedding_layer_train)
-# l_conv_2t = Dropout(0.3)(l_conv_2t)
-
-# conv_2 = [l_conv_4f, l_conv_4t, l_conv_3f, l_conv_3t, l_conv_2f, l_conv_2t]
-conv_2 = [l_conv_4f, l_conv_4t, l_conv_3f, l_conv_3t, ]
-
-l_merge_2 = Concatenate(axis=1)(conv_2)
-print("l_conv_4f",l_conv_4f.shape)
-print("l_conv_4t",l_conv_4t.shape)
-print("l_conv_3f",l_conv_3f.shape)
-print("l_conv_3t",l_conv_3t.shape)
-print("l_merge_2",l_merge_2.shape)
-
-
-# ### RIGHT LSTM PART
-
-# %%
-l_c_lstm = Bidirectional(LSTM(LSTM_2_C_L_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(l_merge_2)
-print("l_c_lstm",l_c_lstm.shape)
-
-
-# ###  FINAL CONCAT
-
-# %%
-
-l_merge = Concatenate(axis=1)([l_lstm_c, l_c_lstm])
-l_pool = MaxPooling1D(4)(l_merge)
-l_drop = Dropout(0.5)(l_pool)
-l_flat = Flatten()(l_drop)
-l_dense = Dense(128, activation='sigmoid')(l_flat)
-preds= Dense(71, activation='sigmoid')(l_dense)
-
-
-# %%
-
-
-
+                    print(metricTable)
+                return predicted
