@@ -25,7 +25,7 @@ tf.__version__
 # %%
 import pandas as pd
 import numpy as np
-import datetime
+import datetime, time
 
 
 # %%
@@ -81,12 +81,18 @@ def get_lr_metric(optimizer):
         return optimizer.lr
     return lr
   
-def initial_boost(epoch):
-    if epoch==0: return float(8.0)
-    elif epoch==1: return float(4.0)
-    elif epoch==2: return float(2.0)
-    elif epoch==3: return float(1.5)
-    else: return float(1.0)
+# def initial_boost(epoch):
+#     if epoch==0: return float(8.0)
+#     elif epoch==1: return float(4.0)
+#     elif epoch==2: return float(2.0)
+#     elif epoch==3: return float(1.5)
+#     else: return float(1.0)
+def initial_boost(epoch, lr):
+    # print("THE LEARNING RATE IS: ",lr)
+    if epoch < 10:
+        return 0.01
+    else:
+        return float(lr * tf.math.exp(-0.1))
 
 def step_cyclic(epoch):
     try:
@@ -358,6 +364,7 @@ class BalanceNet(object):
             LSTM_2_C_L_UNITS (int, optional): [description]. Defaults to 128.
             OUTPUT_DENSE_UNIT (int, optional): [description]. Defaults to 128.
             OUTPUT_SIZE (int, optional): [description]. Defaults to 71.
+            optimizer_name (string, optional) : Possible values any valid tf otimizer, and 'adadelta'
         """
         self.__input_shape =INPUT_SHAPE
         inp_layer = Input(shape=INPUT_SHAPE, dtype="float32")
@@ -472,9 +479,9 @@ class BalanceNet(object):
         l_drop = Dropout(0.5)(l_pool)
         l_flat = Flatten()(l_drop)
         l_dense = Dense(OUTPUT_DENSE_UNIT, activation='sigmoid')(l_flat)
-        preds= Dense(71, activation='sigmoid')(l_dense)
+        preds= Dense(OUTPUT_SIZE, activation='sigmoid')(l_dense)
 
-        self.model = Model(inp_layer, preds).to('cuda')
+        self.model = Model(inp_layer, preds)
         
         
         adadelta = optimizers.Adadelta(lr=0.9, rho=0.90, epsilon=None, decay=0.001)
@@ -485,7 +492,8 @@ class BalanceNet(object):
 
         self.model.compile( loss='categorical_crossentropy',
                             optimizer=optimizer_name,
-                            metrics=[   "categorical_accuracy",
+                            metrics=[   "acc",
+                                        "categorical_accuracy",
                                         "top_k_categorical_accuracy",
                                         tf.keras.metrics.Precision(),
                                         tf.keras.metrics.Recall(),
@@ -493,116 +501,285 @@ class BalanceNet(object):
                                         tf.keras.metrics.TrueNegatives(),
                                         tf.keras.metrics.FalsePositives(),
                                         tf.keras.metrics.FalseNegatives()])
-        def __reshape_input(self, input, timestep, features):
-            """__reshape_input [summary]
+    def __reshape_input(self, input, batch_size, timestep, features):
+        """__reshape_input [summary]
 
-            Args:
-                input [tensor, ndarray]: input array to be reshaped
-                timestep ([integer]): No of timesteps to be considered
-                features ([integer]): No of features to be considered in each time step
+        Args:
+            input [tensor, ndarray]: input array to be reshaped
+            timestep ([integer]): No of timesteps to be considered
+            features ([integer]): No of features to be considered in each time step
 
-            Raises:
-                ex: [ValueError] WHEN THE NDARRAY CANT BE RESHAPED
+        Raises:
+            ex: [ValueError] WHEN THE NDARRAY CANT BE RESHAPED
 
-            Returns:
-                [tensor, ndarray]: reshaped
-            """
-            try:
-                batch_size = input.shape[0]
-                reshaped= input.reshape(batch_size, timestep, features)
-                return reshaped
-            except ValueError as ex:
-                raise ex
-
-
-        def fitModel(self, train_x, train_y, val_x, val_y, model_type, epochs_count, batch_count):
-            """fitModel [summary]
-
-            Args:
-                train_x ([type]): [description]
-                train_y ([type]): [description]
-                val_x ([type]): [description]
-                val_y ([type]): [description]
-                model_type ([type]): [description]
-                epochs_count ([type]): [description]
-                batch_count ([type]): [description]
-            """
-            try:
-                print("Training Progress:")
-                dt_time =datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-                log_dir = "logs/fit/" + dt_time
-                log_hist = "logs/hist/" + dt_time
-                modelSaveFileName = "best_model_"+ str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + dt_time + model_type + ".h5"
-                modelLogSaveFileName = log_hist+"model_log"+str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + dt_time+ model_type + ".csv"
+        Returns:
+            [tensor, ndarray]: reshaped
+        """
+        try:
+            reshaped= input.reshape((batch_size, timestep, features))
+            print("Reshaped Into Shape: ", reshaped.shape)
+            return reshaped
+        except ValueError as ex:
+            raise ex
 
 
-                tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
-                earlyStopping_cb = callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=200)
-                modelChecpoint_cb = callbacks.ModelCheckpoint(modelSaveFileName, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
-                lr_schedule_cb = callbacks.LearningRateScheduler(initial_boost)
+    def fitModel(self, train_x, train_y, val_x, val_y, model_type, epochs_count, batch_count, time_dict, key):
+        """fitModel [summary]
 
-                print("Reshaping input:")
-                X_train = self.__reshape_input(train_x,self.__input_shape[0], self.__input_shape[1])
-                X_val= self.__reshape_input(val_x,self.__input_shape[0], self.__input_shape[1])
+        Args:
+            train_x ([ndarray]): [train_data_set]
+            train_y ([ndarray]): [train_data_set labels]
+            val_x ([ndarray]): [validation_data_set]
+            val_y ([ndarray]): [validation_data_set labels]
+            model_type ([string]): [--FORMAT: <embedding>_<embedding type>]
+            epochs_count ([integer]): [determines what will be the epochs]
+            batch_count ([integer]): [determines what will be the count of samples in each batch]
+        """
+        try:
+            print("Training Progress for: "+model_type)
+            dt_time =datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+            log_dir = "logs/fit/"
+            log_hist = "logs/hist/" 
+            log_model = "logs/save/"
+            modelSaveFileName = log_model+"best_model_"+ str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + "_" + dt_time + "_" + model_type + ".h5"
+            modelLogSaveFileName = log_hist+"model_log"+str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + "_" + dt_time+ "_" + model_type + ".csv"
 
-                # print(sum(np.isnan(X_train_)))
-                model_log = self.model.fit(X_train, train_y,
-                                        validation_data=(X_val, val_y),
-                                        epochs=epochs_count,
-                                        batch_size=batch_count,
-                                        callbacks=[tensorboard_cb, earlyStopping_cb, modelChecpoint_cb, lr_schedule_cb])
-                pd.DataFrame(model_log.history).to_csv(modelLogSaveFileName)
-                
-            except Exception as ex:
-                print(ex.with_traceback())
 
-            def predictModel(self, test_x, test_y, threshold_list):
-                """predictModel predicts the model and evaluates it for various thresholds 
+            tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+            earlyStopping_cb = callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
+            modelCheckpoint_cb = callbacks.ModelCheckpoint(modelSaveFileName, monitor='val_acc', mode='max', verbose=1, save_best_only=True)
+            lr_schedule_cb = callbacks.LearningRateScheduler(initial_boost)
 
-                Args:
-                    test_x ([ndarray]): test data set to be predicted
-                    test_y ([ndarray]): original labels set of the test dataset
+            print("Reshaping inputs")
+            X_train = self.__reshape_input(train_x, train_x.shape[0], self.__input_shape[0], self.__input_shape[1])
+            X_val= self.__reshape_input(val_x, val_x.shape[0], self.__input_shape[0], self.__input_shape[1])
+            print("Reshaped Successfully!")
+            start_time= time.time()           
+            # print(sum(np.isnan(X_train_)))
+            model_log = self.model.fit(X_train, train_y,
+                                    validation_data=(X_val, val_y),
+                                    epochs=epochs_count,
+                                    batch_size=batch_count,
+                                    callbacks=[earlyStopping_cb, modelCheckpoint_cb, lr_schedule_cb])
+            end_time =time.time()
+            log_time(key=key,start_time=start_time, end_time=end_time, phase="train",log_dict=time_dict)
+            pd.DataFrame(model_log.history).to_csv(modelLogSaveFileName)
+            
+        except Exception as ex:
+            print("Exception in fitModel")
+            print(ex)
 
-                Returns:
-                    [ndarray]: [the predicted values from the model]
-                """
-                thresholds = threshold_list
-                
-                _test_x = self.__reshape_input(test_x, self.__input_shape[0], self.__input_shape[1])
-                real = test_y
-                predicted = self.model.predict(test_x)
-                for threshold in thresholds:
-                    print("At threshold of " + str(threshold))
-                    _predicted = predicted.copy()
-                    np.apply_along_axis(np.vectorize(lambda x: 1 if x> threshold else 0) ,axis=1)
+    def predictModel(self, test_x, test_y, threshold_list,time_dict,key):
+        """predictModel predicts the model and evaluates it for various thresholds 
 
-                    accuracy = accuracy_score(real, _predicted)
-                    hamLoss = hamming_loss(real, _predicted)
-                    # element wise correctness
-                    term_wise_accuracy = np.sum(np.logical_not(
-                        np.logical_xor(real, _predicted)))/real.size
+        Args:
+            test_x ([ndarray]): test data set to be predicted
+            test_y ([ndarray]): original labels set of the test dataset
 
-                    macro_precision = precision_score(real, _predicted, average='macro')
-                    macro_recall = recall_score(real, _predicted, average='macro')
-                    macro_f1 = f1_score(real, _predicted, average='macro')
+        Returns:
+            [ndarray]: [the predicted values from the model]
+        """
+        thresholds = threshold_list
+        start_time= time.time()           
+        
+        _test_x = self.__reshape_input(test_x, test_x.shape[0], self.__input_shape[0], self.__input_shape[1])
+        real = test_y
+        predicted = self.model.predict(_test_x)
+        for threshold in thresholds:
+            print("At threshold of " + str(threshold))
+            _predicted = predicted.copy()
+            _predicted = np.apply_along_axis(np.vectorize(lambda x: 1 if x> threshold else 0) ,axis=1, arr=_predicted)
 
-                    micro_precision = precision_score(real, _predicted, average='micro')
-                    micro_recall = recall_score(real, _predicted, average='micro')
-                    micro_f1 = f1_score(real, _predicted, average='micro')
+            accuracy = accuracy_score(real, _predicted)
+            hamLoss = hamming_loss(real, _predicted)
+            # element wise correctness
+            term_wise_accuracy = np.sum(np.logical_not(np.logical_xor(real, _predicted)))/real.size
 
-                    metricTable = prettytable.PrettyTable()
-                    metricTable.field_names = ["Metric", "Macro Value", "Micro Value"]
-                    metricTable.add_row(["Hamming Loss", "{0:.3f}".format(hamLoss), ""])
-                    metricTable.add_row(
-                        ["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
+            macro_precision = precision_score(real, _predicted, average='macro')
+            macro_recall = recall_score(real, _predicted, average='macro')
+            macro_f1 = f1_score(real, _predicted, average='macro')
 
-                    metricTable.add_row(["Accuracy", "{0:.3f}".format(accuracy), ""])
-                    metricTable.add_row(["Precision", "{0:.3f}".format(
-                        macro_precision), "{0:.3f}".format(micro_precision)])
-                    metricTable.add_row(["Recall", "{0:.3f}".format(
-                        macro_recall), "{0:.3f}".format(micro_recall)])
-                    metricTable.add_row(
-                        ["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
+            micro_precision = precision_score(real, _predicted, average='micro')
+            micro_recall = recall_score(real, _predicted, average='micro')
+            micro_f1 = f1_score(real, _predicted, average='micro')
 
-                    print(metricTable)
-                return predicted
+            metricTable = prettytable.PrettyTable()
+            metricTable.field_names = ["Metric", "Macro Value", "Micro Value"]
+            metricTable.add_row(["Hamming Loss", "{0:.3f}".format(hamLoss), ""])
+            metricTable.add_row(["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
+            metricTable.add_row(["Accuracy", "{0:.3f}".format(accuracy), ""])
+            metricTable.add_row(["Precision", "{0:.3f}".format(macro_precision), "{0:.3f}".format(micro_precision)])
+            metricTable.add_row(["Recall", "{0:.3f}".format(macro_recall), "{0:.3f}".format(micro_recall)])
+            metricTable.add_row(["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
+
+            count_1_as_1 = 0 #TP
+            count_1_as_0 = 0 #FN
+            count_0_as_1 = 0 #FP
+            count_0_as_0 = 0 #TN
+            total_real_1s = 0
+            total_real_0s = 0
+            for i in range(real.shape[0]):
+                for j in range(real.shape[1]):
+                    if real[i,j] == 1:
+                        total_real_1s+=1
+                        if _predicted[i,j]==1:
+                            count_1_as_1 +=1
+                        if _predicted[i,j]==0:
+                            count_1_as_0 +=1
+                    if real[i,j] == 0:
+                        total_real_0s+=1
+                        if _predicted[i,j]==1:
+                            count_0_as_1 +=1
+                        if _predicted[i,j]==0:
+                            count_0_as_0 +=1
+            TP = count_1_as_1
+            FN = count_1_as_0
+            FP = count_0_as_1
+            TN = count_0_as_0
+            print("count_1_as_1, TP",count_1_as_1)
+            print("count_1_as_0, FN",count_1_as_0)
+            print("count_0_as_1, FP",count_0_as_1)
+            print("count_0_as_0, TN",count_0_as_0)
+            print("total_real_1s",total_real_1s)
+            print("total_real_0s",total_real_0s)
+            # MY_Accuracy = (TP+TN)/(TP+FP+FN+TN)
+            # MY_Precision = TP/(TP+FP)
+            # MY_Recall = TP/(TP+FN)
+            # MY_F1_Score = 2*(MY_Recall * MY_Precision) / (MY_Recall + MY_Precision)
+            # print("MY_Accuracy",MY_Accuracy)
+            # print("MY_Precision",MY_Precision)
+            # print("MY_Recall",MY_Recall)
+            # print("MY_F1_Score",MY_F1_Score)
+            indepth_metricTable = prettytable.PrettyTable()
+            indepth_metricTable.field_names = ["Metric", "Value"]
+            indepth_metricTable.add_row(["True Positives, count_1_as_1", "{0:.0f}".format(TP)])
+            indepth_metricTable.add_row(["False Negatives, count_1_as_0", "{0:.0f}".format(FN)])
+            indepth_metricTable.add_row(["False Positives, count_0_as_1", "{0:.0f}".format(FP)])
+            indepth_metricTable.add_row(["True Negatives, count_0_as_0", "{0:.0f}".format(TN)])
+            indepth_metricTable.add_row(["Real 1s ", "{0:.0f}".format(total_real_1s)])
+            indepth_metricTable.add_row(["Real 0s ", "{0:.0f}".format(total_real_0s)])
+            print(metricTable)
+            print(indepth_metricTable)
+        end_time =time.time()
+        log_time(key=key,start_time=start_time, end_time=end_time, phase="test",log_dict=time_dict)
+        return predicted
+# %%
+def predictModel(model, test_x, test_y, threshold_list, input_shape):
+    """predictModel [summary]
+        Predicts the model and evaluates it for various thresholds
+        USE THIS FOR MODELS WHICH HAVE BEEN LOADED FROM .h5 files. 
+        
+    Args:
+        model ([Keras.Model]): [description]
+        test_x ([ndarray]): test data set to be predicted
+        test_y ([ndarray]): original labels set of the test dataset
+        threshold_list ([list]): list of thresholds
+        input_shape ([tupe len=2]): input shape (timestamps, features)
+
+    Returns:
+         [ndarray]: [the predicted values from the model]
+    """
+
+
+    thresholds = threshold_list
+    
+    _test_x = np.reshape(test_x, input_shape[0], input_shape[1])
+    real = test_y
+    predicted = model.predict(_test_x)
+    for threshold in thresholds:
+        print("At threshold of " + str(threshold))
+        _predicted = predicted.copy()
+        np.apply_along_axis(np.vectorize(lambda x: 1 if x> threshold else 0) ,axis=1)
+
+        accuracy = accuracy_score(real, _predicted)
+        hamLoss = hamming_loss(real, _predicted)
+        # element wise correctness
+        term_wise_accuracy = np.sum(np.logical_not(np.logical_xor(real, _predicted)))/real.size
+
+        macro_precision = precision_score(real, _predicted, average='macro')
+        macro_recall = recall_score(real, _predicted, average='macro')
+        macro_f1 = f1_score(real, _predicted, average='macro')
+
+        micro_precision = precision_score(real, _predicted, average='micro')
+        micro_recall = recall_score(real, _predicted, average='micro')
+        micro_f1 = f1_score(real, _predicted, average='micro')
+
+        metricTable = prettytable.PrettyTable()
+        metricTable.field_names = ["Metric", "Macro Value", "Micro Value"]
+        metricTable.add_row(["Hamming Loss", "{0:.3f}".format(hamLoss), ""])
+        metricTable.add_row(["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
+
+        metricTable.add_row(["Accuracy", "{0:.3f}".format(accuracy), ""])
+        metricTable.add_row(["Precision", "{0:.3f}".format(macro_precision), "{0:.3f}".format(micro_precision)])
+        metricTable.add_row(["Recall", "{0:.3f}".format(macro_recall), "{0:.3f}".format(micro_recall)])
+        metricTable.add_row(["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
+
+        count_1_as_1 = 0 #TP
+        count_1_as_0 = 0 #FN
+        count_0_as_1 = 0 #FP
+        count_0_as_0 = 0 #TN
+        total_real_1s = 0
+        total_real_0s = 0
+        for i in range(real.shape[0]):
+            for j in range(real.shape[1]):
+                if real[i,j] == 1:
+                    total_real_1s+=1
+                    if _predicted[i,j]==1:
+                        count_1_as_1 +=1
+                    if _predicted[i,j]==0:
+                        count_1_as_0 +=1
+                if real[i,j] == 0:
+                    total_real_0s+=1
+                    if _predicted[i,j]==1:
+                        count_0_as_1 +=1
+                    if _predicted[i,j]==0:
+                        count_0_as_0 +=1
+        TP = count_1_as_1
+        FN = count_1_as_0
+        FP = count_0_as_1
+        TN = count_0_as_0
+        print("count_1_as_1, TP",count_1_as_1)
+        print("count_1_as_0, FN",count_1_as_0)
+        print("count_0_as_1, FP",count_0_as_1)
+        print("count_0_as_0, TN",count_0_as_0)
+        print("total_real_1s",total_real_1s)
+        print("total_real_0s",total_real_0s)
+        # MY_Accuracy = (TP+TN)/(TP+FP+FN+TN)
+        # MY_Precision = TP/(TP+FP)
+        # MY_Recall = TP/(TP+FN)
+        # MY_F1_Score = 2*(MY_Recall * MY_Precision) / (MY_Recall + MY_Precision)
+        # print("MY_Accuracy",MY_Accuracy)
+        # print("MY_Precision",MY_Precision)
+        # print("MY_Recall",MY_Recall)
+        # print("MY_F1_Score",MY_F1_Score)
+        indepth_metricTable = prettytable.PrettyTable()
+        indepth_metricTable.field_names = ["Metric", "Value"]
+        indepth_metricTable.add_row(["True Positives, count_1_as_1", "{0:.0f}".format(TP)])
+        indepth_metricTable.add_row(["False Negatives, count_1_as_0", "{0:.0f}".format(FN)])
+        indepth_metricTable.add_row(["False Positives, count_0_as_1", "{0:.0f}".format(FP)])
+        indepth_metricTable.add_row(["True Negatives, count_0_as_0", "{0:.0f}".format(TN)])
+        indepth_metricTable.add_row(["Real 1s ", "{0:.0f}".format(total_real_1s)])
+        indepth_metricTable.add_row(["Real 0s ", "{0:.0f}".format(total_real_0s)])
+        print(metricTable)
+        print(indepth_metricTable)
+    return predicted
+
+#%%
+def log_time(key,start_time, end_time, phase,log_dict):
+    """log_time [summary]
+
+    Args:
+        key ([type]): [name of model]
+        start_time ([type]): [start of the phase]
+        end_time ([type]): [end of the phase]
+        phase ([type]): [phase type. test or train]
+        log_dict ([type]): [list of dicts which will store all the files]
+
+    Returns:
+        [list of dict]: [appends the data sends the list out]
+    """
+    log_dict.append({"model":key, "phase":phase,"start_time":start_time ,"end_time":end_time, "total_time":end_time-start_time})
+    return log_dict
+def time_logger_save(log_dict, filename):
+    location= "logs/fit/runtime/"
+    pd.DataFrame(log_dict).to_csv(location+filename+".csv")
