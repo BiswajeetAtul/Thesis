@@ -4,6 +4,10 @@
 # from IPython import get_ipython
 
 # %%
+import time
+import datetime
+import numpy as np
+import pandas as pd
 import prettytable
 import tensorflow as tf
 from keras import callbacks, initializers, optimizers, regularizers
@@ -23,13 +27,10 @@ tf.__version__
 
 
 # %%
-import pandas as pd
-import numpy as np
-import datetime, time
 
 
 # %%
-# if tf.test.gpu_device_name(): 
+# if tf.test.gpu_device_name():
 #     print('Default GPU Device:{}'.format(tf.test.gpu_device_name()))
 # else:
 #     print("Please install GPU version of TF")
@@ -75,18 +76,20 @@ def evaluate_model(real, predicted):
 
 
 # %%
-#Helper Functions
+# Helper Functions
 def get_lr_metric(optimizer):
     def lr(y_true, y_pred):
         return optimizer.lr
     return lr
-  
+
 # def initial_boost(epoch):
 #     if epoch==0: return float(8.0)
 #     elif epoch==1: return float(4.0)
 #     elif epoch==2: return float(2.0)
 #     elif epoch==3: return float(1.5)
 #     else: return float(1.0)
+
+
 def initial_boost(epoch, lr):
     # print("THE LEARNING RATE IS: ",lr)
     if epoch < 10:
@@ -94,16 +97,19 @@ def initial_boost(epoch, lr):
     else:
         return float(lr * tf.math.exp(-0.1))
 
+
 def step_cyclic(epoch):
     try:
         l_r, decay = 1.0, 0.0001
-        if epoch%33==0:multiplier = 10
-        else:multiplier = 1
+        if epoch % 33 == 0:
+            multiplier = 10
+        else:
+            multiplier = 1
         rate = float(multiplier * l_r * 1/(1 + decay * epoch))
         #print("Epoch",epoch+1,"- learning_rate",rate)
         return rate
     except Exception as e:
-        print("Error in lr_schedule:",str(e))
+        print("Error in lr_schedule:", str(e))
         return float(1.0)
 
 # Loading Data
@@ -252,28 +258,28 @@ possible combination in inputs:
 
 """
 # ## MODEL (1, 768):
-# 
+#
 
 # %%
-INPUT_SHAPE =(1,768)
-EM_L_F_UNITS= 768
-EM_L_T_UNITS= 768
+INPUT_SHAPE = (1, 768)
+EM_L_F_UNITS = 768
+EM_L_T_UNITS = 768
 # LEFT CHANNEL
-LSTM_1F_UNITS= 768
-LSTM_1T_UNITS= 768
+LSTM_1F_UNITS = 768
+LSTM_1T_UNITS = 768
 
-CONV_2_FILTER= 24
-CONV_2_KERNEL= 2
-CONV_3_FILTER= 24
-CONV_3_KERNEL= 2
-CONV_5_FILTER= 24
-CONV_5_KERNEL= 2
-CONV_6_FILTER= 24
-CONV_6_KERNEL= 2
-CONV_8_FILTER= 24
-CONV_8_KERNEL= 2
+CONV_2_FILTER = 24
+CONV_2_KERNEL = 2
+CONV_3_FILTER = 24
+CONV_3_KERNEL = 2
+CONV_5_FILTER = 24
+CONV_5_KERNEL = 2
+CONV_6_FILTER = 24
+CONV_6_KERNEL = 2
+CONV_8_FILTER = 24
+CONV_8_KERNEL = 2
 
-# RIGHT CHANNEL 
+# RIGHT CHANNEL
 CONV_4F_FILTERS = 12
 CONV_4F_KERNEL = 2
 CONV_4T_FILTERS = 12
@@ -291,46 +297,49 @@ CONV_2T_KERNEL = 2
 
 LSTM_2_C_L_UNITS = 128
 
-OUTPUT_DENSE_UNIT =128
+OUTPUT_DENSE_UNIT = 128
 OUTPUT_SIZE = 71
 
 # %%
+
+
 class BalanceNet(object):
     """
     docstring
     """
+
     def __init__(self,
-                INPUT_SHAPE,
-                EM_L_F_UNITS,
-                EM_L_T_UNITS,
-                LSTM_1F_UNITS,
-                LSTM_1T_UNITS,
-                CONV_2_FILTER,
-                CONV_2_KERNEL,
-                CONV_3_FILTER,
-                CONV_3_KERNEL,
-                CONV_5_FILTER,
-                CONV_5_KERNEL,
-                CONV_6_FILTER,
-                CONV_6_KERNEL,
-                CONV_8_FILTER,
-                CONV_8_KERNEL,
-                CONV_4F_FILTERS = 12,
-                CONV_4F_KERNEL=2,
-                CONV_4T_FILTERS = 12,
-                CONV_4T_KERNEL = 2,
-                CONV_3F_FILTERS = 12,
-                CONV_3F_KERNEL = 2,
-                CONV_3T_FILTERS = 12,
-                CONV_3T_KERNEL = 2,
-                CONV_2F_FILTERS = 12,
-                CONV_2F_KERNEL = 2,
-                CONV_2T_FILTERS = 12,
-                CONV_2T_KERNEL=2,
-                LSTM_2_C_L_UNITS=128,
-                OUTPUT_DENSE_UNIT=128,
-                OUTPUT_SIZE=71,
-                optimizer_name= 'adam'):
+                 INPUT_SHAPE,
+                 EM_L_F_UNITS,
+                 EM_L_T_UNITS,
+                 LSTM_1F_UNITS,
+                 LSTM_1T_UNITS,
+                 CONV_2_FILTER,
+                 CONV_2_KERNEL,
+                 CONV_3_FILTER,
+                 CONV_3_KERNEL,
+                 CONV_5_FILTER,
+                 CONV_5_KERNEL,
+                 CONV_6_FILTER,
+                 CONV_6_KERNEL,
+                 CONV_8_FILTER,
+                 CONV_8_KERNEL,
+                 CONV_4F_FILTERS=12,
+                 CONV_4F_KERNEL=2,
+                 CONV_4T_FILTERS=12,
+                 CONV_4T_KERNEL=2,
+                 CONV_3F_FILTERS=12,
+                 CONV_3F_KERNEL=2,
+                 CONV_3T_FILTERS=12,
+                 CONV_3T_KERNEL=2,
+                 CONV_2F_FILTERS=12,
+                 CONV_2F_KERNEL=2,
+                 CONV_2T_FILTERS=12,
+                 CONV_2T_KERNEL=2,
+                 LSTM_2_C_L_UNITS=128,
+                 OUTPUT_DENSE_UNIT=128,
+                 OUTPUT_SIZE=71,
+                 optimizer_name='adam'):
         """__init__ [summary]
 
         Args:
@@ -366,112 +375,124 @@ class BalanceNet(object):
             OUTPUT_SIZE (int, optional): [description]. Defaults to 71.
             optimizer_name (string, optional) : Possible values any valid tf otimizer, and 'adadelta'
         """
-        self.__input_shape =INPUT_SHAPE
+        self.__input_shape = INPUT_SHAPE
         inp_layer = Input(shape=INPUT_SHAPE, dtype="float32")
-        embedding_layer_frozen=TimeDistributed(Dense(EM_L_F_UNITS,  trainable= False))(inp_layer)
-        embedding_layer_train= TimeDistributed(Dense(EM_L_T_UNITS,  trainable= True))(inp_layer)
-        print("inp_layer",inp_layer.shape)
-        print("embedding_layer_frozen",embedding_layer_frozen.shape)
+        embedding_layer_frozen = TimeDistributed(
+            Dense(EM_L_F_UNITS,  trainable=False))(inp_layer)
+        embedding_layer_train = TimeDistributed(
+            Dense(EM_L_T_UNITS,  trainable=True))(inp_layer)
+        print("inp_layer", inp_layer.shape)
+        print("embedding_layer_frozen", embedding_layer_frozen.shape)
         print("embedding_layer_train", embedding_layer_train.shape)
-        
+
         # ### LSTM TO CNN LEFT CHANNEL
         # ### LEFT LSTM PART
 
-        l_lstm_1f =Bidirectional(LSTM(LSTM_1F_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(embedding_layer_frozen)
-        l_lstm_1t =Bidirectional(LSTM(LSTM_1T_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(embedding_layer_train)
+        l_lstm_1f = Bidirectional(LSTM(LSTM_1F_UNITS, return_sequences=True,
+                                       dropout=0.3, recurrent_dropout=0.0))(embedding_layer_frozen)
+        l_lstm_1t = Bidirectional(LSTM(LSTM_1T_UNITS, return_sequences=True,
+                                       dropout=0.3, recurrent_dropout=0.0))(embedding_layer_train)
 
         l_lstm1 = Concatenate(axis=1)([l_lstm_1f, l_lstm_1t])
-        print("l_lstm_1f",l_lstm_1f.shape)
-        print("l_lstm_1t",l_lstm_1t.shape)
+        print("l_lstm_1f", l_lstm_1f.shape)
+        print("l_lstm_1t", l_lstm_1t.shape)
         print("l_lstm1", l_lstm1.shape)
-        
+
         # ### LEFT CNN PART
-        conv_1=[]
-        l_conv_2 = Conv1D(filters=CONV_2_FILTER, kernel_size=CONV_2_KERNEL, activation='relu')(l_lstm1)
+        conv_1 = []
+        l_conv_2 = Conv1D(filters=CONV_2_FILTER,
+                          kernel_size=CONV_2_KERNEL, activation='relu')(l_lstm1)
         l_conv_2 = Dropout(0.3)(l_conv_2)
-        print("l_conv_2",l_conv_2.shape)
+        print("l_conv_2", l_conv_2.shape)
 
         conv_1.append(l_conv_2)
 
-        if CONV_3_FILTER!=0:
-            l_conv_3 = Conv1D(filters=CONV_3_FILTER, kernel_size=CONV_3_KERNEL, activation='relu')(l_lstm1)
+        if CONV_3_FILTER != 0:
+            l_conv_3 = Conv1D(
+                filters=CONV_3_FILTER, kernel_size=CONV_3_KERNEL, activation='relu')(l_lstm1)
             l_conv_3 = Dropout(0.3)(l_conv_3)
-            print("l_conv_3",l_conv_3.shape)
+            print("l_conv_3", l_conv_3.shape)
 
             conv_1.append(l_conv_3)
 
-
-        if CONV_5_FILTER!=0:
-            l_conv_5 = Conv1D(filters=CONV_5_FILTER, kernel_size=CONV_5_KERNEL, activation='relu')(l_lstm1)
+        if CONV_5_FILTER != 0:
+            l_conv_5 = Conv1D(
+                filters=CONV_5_FILTER, kernel_size=CONV_5_KERNEL, activation='relu')(l_lstm1)
             l_conv_5 = Dropout(0.3)(l_conv_5)
-            print("l_conv_5",l_conv_5.shape)
+            print("l_conv_5", l_conv_5.shape)
 
             conv_1.append(l_conv_5)
 
-        
-        if CONV_6_FILTER!=0:
-            l_conv_6 = Conv1D(filters=CONV_6_FILTER, kernel_size=CONV_6_KERNEL, kernel_regularizer=regularizers.l2(0.001) ,activation='relu')(l_lstm1)
+        if CONV_6_FILTER != 0:
+            l_conv_6 = Conv1D(filters=CONV_6_FILTER, kernel_size=CONV_6_KERNEL,
+                              kernel_regularizer=regularizers.l2(0.001), activation='relu')(l_lstm1)
             l_conv_6 = Dropout(0.3)(l_conv_6)
-            print("l_conv_6",l_conv_6.shape)
+            print("l_conv_6", l_conv_6.shape)
 
             conv_1.append(l_conv_6)
 
-        if CONV_8_FILTER!=0:
-            l_conv_8 = Conv1D(filters=CONV_8_FILTER, kernel_size=CONV_8_KERNEL, kernel_regularizer=regularizers.l2(0.001) ,activation='relu')(l_lstm1)
+        if CONV_8_FILTER != 0:
+            l_conv_8 = Conv1D(filters=CONV_8_FILTER, kernel_size=CONV_8_KERNEL,
+                              kernel_regularizer=regularizers.l2(0.001), activation='relu')(l_lstm1)
             l_conv_8 = Dropout(0.3)(l_conv_8)
             conv_1.append(l_conv_8)
-            print("l_conv_8",l_conv_8.shape)
+            print("l_conv_8", l_conv_8.shape)
 
-
-
-        l_lstm_c = Concatenate(axis =1)(conv_1)
+        l_lstm_c = Concatenate(axis=1)(conv_1)
         print("l_lstm_c", l_lstm_c.shape)
-        
+
         # END LEFT CHANNEL
 
         # RIGHT CHANNEL
         # ### CNN TO LSTM RIGHT CHANNEL
-        
+
         # ### RIGHT CNN PART
         conv_2 = []
-        l_conv_4f = Conv1D(filters= CONV_4F_FILTERS, kernel_size=CONV_4F_KERNEL, activation='relu', kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_frozen)
+        l_conv_4f = Conv1D(filters=CONV_4F_FILTERS, kernel_size=CONV_4F_KERNEL, activation='relu',
+                           kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_frozen)
         l_conv_4f = Dropout(0.3)(l_conv_4f)
 
-        l_conv_4t = Conv1D(filters= CONV_4T_FILTERS, kernel_size=CONV_4T_KERNEL, activation='relu', kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_train)
+        l_conv_4t = Conv1D(filters=CONV_4T_FILTERS, kernel_size=CONV_4T_KERNEL, activation='relu',
+                           kernel_regularizer=regularizers.l2(0.0001))(embedding_layer_train)
         l_conv_4t = Dropout(0.3)(l_conv_4t)
         conv_2.append(l_conv_4f)
         conv_2.append(l_conv_4t)
-        print("l_conv_4f",l_conv_4f.shape)
-        print("l_conv_4t",l_conv_4t.shape)
-        
-        if CONV_3F_FILTERS!=0 and CONV_3T_FILTERS!=0:
-            l_conv_3f = Conv1D(filters= CONV_3F_FILTERS, kernel_size=CONV_3F_KERNEL, activation='relu')(embedding_layer_frozen)
+        print("l_conv_4f", l_conv_4f.shape)
+        print("l_conv_4t", l_conv_4t.shape)
+
+        if CONV_3F_FILTERS != 0 and CONV_3T_FILTERS != 0:
+            l_conv_3f = Conv1D(filters=CONV_3F_FILTERS, kernel_size=CONV_3F_KERNEL, activation='relu')(
+                embedding_layer_frozen)
             l_conv_3f = Dropout(0.3)(l_conv_3f)
 
-            l_conv_3t = Conv1D(filters= CONV_3T_FILTERS, kernel_size=CONV_3T_KERNEL, activation='relu')(embedding_layer_train)
+            l_conv_3t = Conv1D(filters=CONV_3T_FILTERS, kernel_size=CONV_3T_KERNEL, activation='relu')(
+                embedding_layer_train)
             l_conv_3t = Dropout(0.3)(l_conv_3t)
             conv_2.append(l_conv_3f)
             conv_2.append(l_conv_3t)
-            print("l_conv_3f",l_conv_3f.shape)
-            print("l_conv_3t",l_conv_3t.shape)
-        
-        if CONV_2F_FILTERS!=0 and CONV_2T_FILTERS!=0:
-            l_conv_2f = Conv1D(filters= CONV_2F_FILTERS, kernel_size=CONV_2F_KERNEL, activation='relu')(embedding_layer_frozen)
+            print("l_conv_3f", l_conv_3f.shape)
+            print("l_conv_3t", l_conv_3t.shape)
+
+        if CONV_2F_FILTERS != 0 and CONV_2T_FILTERS != 0:
+            l_conv_2f = Conv1D(filters=CONV_2F_FILTERS, kernel_size=CONV_2F_KERNEL, activation='relu')(
+                embedding_layer_frozen)
             l_conv_2f = Dropout(0.3)(l_conv_2f)
 
-            l_conv_2t = Conv1D(filters= CONV_2T_FILTERS, kernel_size=CONV_2T_KERNEL, activation='relu')(embedding_layer_train)
+            l_conv_2t = Conv1D(filters=CONV_2T_FILTERS, kernel_size=CONV_2T_KERNEL, activation='relu')(
+                embedding_layer_train)
             l_conv_2t = Dropout(0.3)(l_conv_2t)
             conv_2.append(l_conv_2f)
             conv_2.append(l_conv_2t)
-            print("l_conv_2f",l_conv_2f.shape)
-            print("l_conv_2t",l_conv_2t.shape)
+            print("l_conv_2f", l_conv_2f.shape)
+            print("l_conv_2t", l_conv_2t.shape)
 
         l_merge_2 = Concatenate(axis=1)(conv_2)
-        print("l_merge_2",l_merge_2.shape)
+        print("l_merge_2", l_merge_2.shape)
 
         # ### RIGHT LSTM PART
-        l_c_lstm = Bidirectional(LSTM(LSTM_2_C_L_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(l_merge_2)
-        print("l_c_lstm",l_c_lstm.shape)
+        l_c_lstm = Bidirectional(LSTM(
+            LSTM_2_C_L_UNITS, return_sequences=True, dropout=0.3, recurrent_dropout=0.0))(l_merge_2)
+        print("l_c_lstm", l_c_lstm.shape)
 
         # FINAL MERGER
         l_merge = Concatenate(axis=1)([l_lstm_c, l_c_lstm])
@@ -479,28 +500,29 @@ class BalanceNet(object):
         l_drop = Dropout(0.5)(l_pool)
         l_flat = Flatten()(l_drop)
         l_dense = Dense(OUTPUT_DENSE_UNIT, activation='sigmoid')(l_flat)
-        preds= Dense(OUTPUT_SIZE, activation='sigmoid')(l_dense)
+        preds = Dense(OUTPUT_SIZE, activation='sigmoid')(l_dense)
 
         self.model = Model(inp_layer, preds)
-        
-        
-        adadelta = optimizers.Adadelta(lr=0.9, rho=0.90, epsilon=None, decay=0.001)
+
+        adadelta = optimizers.Adadelta(
+            lr=0.9, rho=0.90, epsilon=None, decay=0.001)
         lr_metric = get_lr_metric(adadelta)
 
         if optimizer_name == 'adadelta':
             optimizer_name = adadelta
 
-        self.model.compile( loss='categorical_crossentropy',
-                            optimizer=optimizer_name,
-                            metrics=[   "acc",
-                                        "categorical_accuracy",
-                                        "top_k_categorical_accuracy",
-                                        tf.keras.metrics.Precision(),
-                                        tf.keras.metrics.Recall(),
-                                        tf.keras.metrics.TruePositives(),
-                                        tf.keras.metrics.TrueNegatives(),
-                                        tf.keras.metrics.FalsePositives(),
-                                        tf.keras.metrics.FalseNegatives()])
+        self.model.compile(loss='categorical_crossentropy',
+                           optimizer=optimizer_name,
+                           metrics=["acc",
+                                    "categorical_accuracy",
+                                    "top_k_categorical_accuracy",
+                                    tf.keras.metrics.Precision(),
+                                    tf.keras.metrics.Recall(),
+                                    tf.keras.metrics.TruePositives(),
+                                    tf.keras.metrics.TrueNegatives(),
+                                    tf.keras.metrics.FalsePositives(),
+                                    tf.keras.metrics.FalseNegatives()])
+
     def __reshape_input(self, input, batch_size, timestep, features):
         """__reshape_input [summary]
 
@@ -516,12 +538,11 @@ class BalanceNet(object):
             [tensor, ndarray]: reshaped
         """
         try:
-            reshaped= input.reshape((batch_size, timestep, features))
+            reshaped = input.reshape((batch_size, timestep, features))
             print("Reshaped Into Shape: ", reshaped.shape)
             return reshaped
         except ValueError as ex:
             raise ex
-
 
     def fitModel(self, train_x, train_y, val_x, val_y, model_type, epochs_count, batch_count, time_dict, key):
         """fitModel [summary]
@@ -537,39 +558,46 @@ class BalanceNet(object):
         """
         try:
             print("Training Progress for: "+model_type)
-            dt_time =datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+            dt_time = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
             log_dir = "logs/fit/"
-            log_hist = "logs/hist/" 
+            log_hist = "logs/hist/"
             log_model = "logs/save/"
-            modelSaveFileName = log_model+"best_model_"+ str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + "_" + dt_time + "_" + model_type + ".h5"
-            modelLogSaveFileName = log_hist+"model_log"+str(self.__input_shape[0])+ "_" +str(self.__input_shape[1]) + "_" + dt_time+ "_" + model_type + ".csv"
+            modelSaveFileName = log_model+"best_model_" + str(self.__input_shape[0]) + "_" + str(
+                self.__input_shape[1]) + "_" + dt_time + "_" + model_type + ".h5"
+            modelLogSaveFileName = log_hist+"model_log"+str(self.__input_shape[0]) + "_" + str(
+                self.__input_shape[1]) + "_" + dt_time + "_" + model_type + ".csv"
 
-
-            tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
-            earlyStopping_cb = callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
-            modelCheckpoint_cb = callbacks.ModelCheckpoint(modelSaveFileName, monitor='val_acc', mode='max', verbose=1, save_best_only=True)
+            tensorboard_cb = tf.keras.callbacks.TensorBoard(
+                log_dir=log_dir, histogram_freq=1)
+            earlyStopping_cb = callbacks.EarlyStopping(
+                monitor='val_loss', mode='min', verbose=1, patience=50)
+            modelCheckpoint_cb = callbacks.ModelCheckpoint(
+                modelSaveFileName, monitor='val_acc', mode='max', verbose=1, save_best_only=True)
             lr_schedule_cb = callbacks.LearningRateScheduler(initial_boost)
 
             print("Reshaping inputs")
-            X_train = self.__reshape_input(train_x, train_x.shape[0], self.__input_shape[0], self.__input_shape[1])
-            X_val= self.__reshape_input(val_x, val_x.shape[0], self.__input_shape[0], self.__input_shape[1])
+            X_train = self.__reshape_input(
+                train_x, train_x.shape[0], self.__input_shape[0], self.__input_shape[1])
+            X_val = self.__reshape_input(
+                val_x, val_x.shape[0], self.__input_shape[0], self.__input_shape[1])
             print("Reshaped Successfully!")
-            start_time= time.time()           
+            start_time = time.time()
             # print(sum(np.isnan(X_train_)))
             model_log = self.model.fit(X_train, train_y,
-                                    validation_data=(X_val, val_y),
-                                    epochs=epochs_count,
-                                    batch_size=batch_count,
-                                    callbacks=[earlyStopping_cb, modelCheckpoint_cb, lr_schedule_cb])
-            end_time =time.time()
-            log_time(key=key,start_time=start_time, end_time=end_time, phase="train",log_dict=time_dict)
+                                       validation_data=(X_val, val_y),
+                                       epochs=epochs_count,
+                                       batch_size=batch_count,
+                                       callbacks=[earlyStopping_cb, modelCheckpoint_cb, lr_schedule_cb])
+            end_time = time.time()
+            log_time(key=key, start_time=start_time, end_time=end_time,
+                     phase="train", log_dict=time_dict)
             pd.DataFrame(model_log.history).to_csv(modelLogSaveFileName)
-            
+
         except Exception as ex:
             print("Exception in fitModel")
             print(ex)
 
-    def predictModel(self, test_x, test_y, threshold_list,time_dict,key):
+    def predictModel(self, test_x, test_y, threshold_list, time_dict, key, eval_dict):
         """predictModel predicts the model and evaluates it for various thresholds 
 
         Args:
@@ -580,68 +608,78 @@ class BalanceNet(object):
             [ndarray]: [the predicted values from the model]
         """
         thresholds = threshold_list
-        start_time= time.time()           
-        
-        _test_x = self.__reshape_input(test_x, test_x.shape[0], self.__input_shape[0], self.__input_shape[1])
+        start_time = time.time()
+
+        _test_x = self.__reshape_input(
+            test_x, test_x.shape[0], self.__input_shape[0], self.__input_shape[1])
         real = test_y
         predicted = self.model.predict(_test_x)
         for threshold in thresholds:
             print("At threshold of " + str(threshold))
             _predicted = predicted.copy()
-            _predicted = np.apply_along_axis(np.vectorize(lambda x: 1 if x> threshold else 0) ,axis=1, arr=_predicted)
+            _predicted = np.apply_along_axis(np.vectorize(
+                lambda x: 1 if x > threshold else 0), axis=1, arr=_predicted)
 
             accuracy = accuracy_score(real, _predicted)
             hamLoss = hamming_loss(real, _predicted)
             # element wise correctness
-            term_wise_accuracy = np.sum(np.logical_not(np.logical_xor(real, _predicted)))/real.size
+            term_wise_accuracy = np.sum(np.logical_not(
+                np.logical_xor(real, _predicted)))/real.size
 
-            macro_precision = precision_score(real, _predicted, average='macro')
+            macro_precision = precision_score(
+                real, _predicted, average='macro')
             macro_recall = recall_score(real, _predicted, average='macro')
             macro_f1 = f1_score(real, _predicted, average='macro')
 
-            micro_precision = precision_score(real, _predicted, average='micro')
+            micro_precision = precision_score(
+                real, _predicted, average='micro')
             micro_recall = recall_score(real, _predicted, average='micro')
             micro_f1 = f1_score(real, _predicted, average='micro')
 
             metricTable = prettytable.PrettyTable()
             metricTable.field_names = ["Metric", "Macro Value", "Micro Value"]
-            metricTable.add_row(["Hamming Loss", "{0:.3f}".format(hamLoss), ""])
-            metricTable.add_row(["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
+            metricTable.add_row(
+                ["Hamming Loss", "{0:.3f}".format(hamLoss), ""])
+            metricTable.add_row(
+                ["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
             metricTable.add_row(["Accuracy", "{0:.3f}".format(accuracy), ""])
-            metricTable.add_row(["Precision", "{0:.3f}".format(macro_precision), "{0:.3f}".format(micro_precision)])
-            metricTable.add_row(["Recall", "{0:.3f}".format(macro_recall), "{0:.3f}".format(micro_recall)])
-            metricTable.add_row(["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
+            metricTable.add_row(["Precision", "{0:.3f}".format(
+                macro_precision), "{0:.3f}".format(micro_precision)])
+            metricTable.add_row(["Recall", "{0:.3f}".format(
+                macro_recall), "{0:.3f}".format(micro_recall)])
+            metricTable.add_row(
+                ["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
 
-            count_1_as_1 = 0 #TP
-            count_1_as_0 = 0 #FN
-            count_0_as_1 = 0 #FP
-            count_0_as_0 = 0 #TN
+            count_1_as_1 = 0  # TP
+            count_1_as_0 = 0  # FN
+            count_0_as_1 = 0  # FP
+            count_0_as_0 = 0  # TN
             total_real_1s = 0
             total_real_0s = 0
             for i in range(real.shape[0]):
                 for j in range(real.shape[1]):
-                    if real[i,j] == 1:
-                        total_real_1s+=1
-                        if _predicted[i,j]==1:
-                            count_1_as_1 +=1
-                        if _predicted[i,j]==0:
-                            count_1_as_0 +=1
-                    if real[i,j] == 0:
-                        total_real_0s+=1
-                        if _predicted[i,j]==1:
-                            count_0_as_1 +=1
-                        if _predicted[i,j]==0:
-                            count_0_as_0 +=1
+                    if real[i, j] == 1:
+                        total_real_1s += 1
+                        if _predicted[i, j] == 1:
+                            count_1_as_1 += 1
+                        if _predicted[i, j] == 0:
+                            count_1_as_0 += 1
+                    if real[i, j] == 0:
+                        total_real_0s += 1
+                        if _predicted[i, j] == 1:
+                            count_0_as_1 += 1
+                        if _predicted[i, j] == 0:
+                            count_0_as_0 += 1
             TP = count_1_as_1
             FN = count_1_as_0
             FP = count_0_as_1
             TN = count_0_as_0
-            print("count_1_as_1, TP",count_1_as_1)
-            print("count_1_as_0, FN",count_1_as_0)
-            print("count_0_as_1, FP",count_0_as_1)
-            print("count_0_as_0, TN",count_0_as_0)
-            print("total_real_1s",total_real_1s)
-            print("total_real_0s",total_real_0s)
+            print("count_1_as_1, TP", count_1_as_1)
+            print("count_1_as_0, FN", count_1_as_0)
+            print("count_0_as_1, FP", count_0_as_1)
+            print("count_0_as_0, TN", count_0_as_0)
+            print("total_real_1s", total_real_1s)
+            print("total_real_0s", total_real_0s)
             # MY_Accuracy = (TP+TN)/(TP+FP+FN+TN)
             # MY_Precision = TP/(TP+FP)
             # MY_Recall = TP/(TP+FN)
@@ -652,23 +690,36 @@ class BalanceNet(object):
             # print("MY_F1_Score",MY_F1_Score)
             indepth_metricTable = prettytable.PrettyTable()
             indepth_metricTable.field_names = ["Metric", "Value"]
-            indepth_metricTable.add_row(["True Positives, count_1_as_1", "{0:.0f}".format(TP)])
-            indepth_metricTable.add_row(["False Negatives, count_1_as_0", "{0:.0f}".format(FN)])
-            indepth_metricTable.add_row(["False Positives, count_0_as_1", "{0:.0f}".format(FP)])
-            indepth_metricTable.add_row(["True Negatives, count_0_as_0", "{0:.0f}".format(TN)])
-            indepth_metricTable.add_row(["Real 1s ", "{0:.0f}".format(total_real_1s)])
-            indepth_metricTable.add_row(["Real 0s ", "{0:.0f}".format(total_real_0s)])
+            indepth_metricTable.add_row(
+                ["True Positives, count_1_as_1", "{0:.0f}".format(TP)])
+            indepth_metricTable.add_row(
+                ["False Negatives, count_1_as_0", "{0:.0f}".format(FN)])
+            indepth_metricTable.add_row(
+                ["False Positives, count_0_as_1", "{0:.0f}".format(FP)])
+            indepth_metricTable.add_row(
+                ["True Negatives, count_0_as_0", "{0:.0f}".format(TN)])
+            indepth_metricTable.add_row(
+                ["Real 1s ", "{0:.0f}".format(total_real_1s)])
+            indepth_metricTable.add_row(
+                ["Real 0s ", "{0:.0f}".format(total_real_0s)])
             print(metricTable)
             print(indepth_metricTable)
-        end_time =time.time()
-        log_time(key=key,start_time=start_time, end_time=end_time, phase="test",log_dict=time_dict)
+
+            # code to store the evaluation metrics
+            evaluation_metrics_logger(eval_dict, key, threshold, hamLoss, term_wise_accuracy, accuracy,
+                                      micro_precision, micro_recall, micro_f1, macro_precision, macro_recall, macro_f1)
+        end_time = time.time()
+        log_time(key=key, start_time=start_time, end_time=end_time,
+                 phase="test", log_dict=time_dict)
         return predicted
 # %%
+
+
 def predictModel(model, test_x, test_y, threshold_list, input_shape):
     """predictModel [summary]
         Predicts the model and evaluates it for various thresholds
         USE THIS FOR MODELS WHICH HAVE BEEN LOADED FROM .h5 files. 
-        
+
     Args:
         model ([Keras.Model]): [description]
         test_x ([ndarray]): test data set to be predicted
@@ -680,21 +731,22 @@ def predictModel(model, test_x, test_y, threshold_list, input_shape):
          [ndarray]: [the predicted values from the model]
     """
 
-
     thresholds = threshold_list
-    
+
     _test_x = np.reshape(test_x, input_shape[0], input_shape[1])
     real = test_y
     predicted = model.predict(_test_x)
     for threshold in thresholds:
         print("At threshold of " + str(threshold))
         _predicted = predicted.copy()
-        np.apply_along_axis(np.vectorize(lambda x: 1 if x> threshold else 0) ,axis=1)
+        np.apply_along_axis(np.vectorize(
+            lambda x: 1 if x > threshold else 0), axis=1)
 
         accuracy = accuracy_score(real, _predicted)
         hamLoss = hamming_loss(real, _predicted)
         # element wise correctness
-        term_wise_accuracy = np.sum(np.logical_not(np.logical_xor(real, _predicted)))/real.size
+        term_wise_accuracy = np.sum(np.logical_not(
+            np.logical_xor(real, _predicted)))/real.size
 
         macro_precision = precision_score(real, _predicted, average='macro')
         macro_recall = recall_score(real, _predicted, average='macro')
@@ -707,43 +759,47 @@ def predictModel(model, test_x, test_y, threshold_list, input_shape):
         metricTable = prettytable.PrettyTable()
         metricTable.field_names = ["Metric", "Macro Value", "Micro Value"]
         metricTable.add_row(["Hamming Loss", "{0:.3f}".format(hamLoss), ""])
-        metricTable.add_row(["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
+        metricTable.add_row(
+            ["Term Wise Accuracy", "{0:.3f}".format(term_wise_accuracy), ""])
 
         metricTable.add_row(["Accuracy", "{0:.3f}".format(accuracy), ""])
-        metricTable.add_row(["Precision", "{0:.3f}".format(macro_precision), "{0:.3f}".format(micro_precision)])
-        metricTable.add_row(["Recall", "{0:.3f}".format(macro_recall), "{0:.3f}".format(micro_recall)])
-        metricTable.add_row(["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
+        metricTable.add_row(["Precision", "{0:.3f}".format(
+            macro_precision), "{0:.3f}".format(micro_precision)])
+        metricTable.add_row(["Recall", "{0:.3f}".format(
+            macro_recall), "{0:.3f}".format(micro_recall)])
+        metricTable.add_row(
+            ["F1-measure", "{0:.3f}".format(macro_f1), "{0:.3f}".format(micro_f1)])
 
-        count_1_as_1 = 0 #TP
-        count_1_as_0 = 0 #FN
-        count_0_as_1 = 0 #FP
-        count_0_as_0 = 0 #TN
+        count_1_as_1 = 0  # TP
+        count_1_as_0 = 0  # FN
+        count_0_as_1 = 0  # FP
+        count_0_as_0 = 0  # TN
         total_real_1s = 0
         total_real_0s = 0
         for i in range(real.shape[0]):
             for j in range(real.shape[1]):
-                if real[i,j] == 1:
-                    total_real_1s+=1
-                    if _predicted[i,j]==1:
-                        count_1_as_1 +=1
-                    if _predicted[i,j]==0:
-                        count_1_as_0 +=1
-                if real[i,j] == 0:
-                    total_real_0s+=1
-                    if _predicted[i,j]==1:
-                        count_0_as_1 +=1
-                    if _predicted[i,j]==0:
-                        count_0_as_0 +=1
+                if real[i, j] == 1:
+                    total_real_1s += 1
+                    if _predicted[i, j] == 1:
+                        count_1_as_1 += 1
+                    if _predicted[i, j] == 0:
+                        count_1_as_0 += 1
+                if real[i, j] == 0:
+                    total_real_0s += 1
+                    if _predicted[i, j] == 1:
+                        count_0_as_1 += 1
+                    if _predicted[i, j] == 0:
+                        count_0_as_0 += 1
         TP = count_1_as_1
         FN = count_1_as_0
         FP = count_0_as_1
         TN = count_0_as_0
-        print("count_1_as_1, TP",count_1_as_1)
-        print("count_1_as_0, FN",count_1_as_0)
-        print("count_0_as_1, FP",count_0_as_1)
-        print("count_0_as_0, TN",count_0_as_0)
-        print("total_real_1s",total_real_1s)
-        print("total_real_0s",total_real_0s)
+        print("count_1_as_1, TP", count_1_as_1)
+        print("count_1_as_0, FN", count_1_as_0)
+        print("count_0_as_1, FP", count_0_as_1)
+        print("count_0_as_0, TN", count_0_as_0)
+        print("total_real_1s", total_real_1s)
+        print("total_real_0s", total_real_0s)
         # MY_Accuracy = (TP+TN)/(TP+FP+FN+TN)
         # MY_Precision = TP/(TP+FP)
         # MY_Recall = TP/(TP+FN)
@@ -754,18 +810,26 @@ def predictModel(model, test_x, test_y, threshold_list, input_shape):
         # print("MY_F1_Score",MY_F1_Score)
         indepth_metricTable = prettytable.PrettyTable()
         indepth_metricTable.field_names = ["Metric", "Value"]
-        indepth_metricTable.add_row(["True Positives, count_1_as_1", "{0:.0f}".format(TP)])
-        indepth_metricTable.add_row(["False Negatives, count_1_as_0", "{0:.0f}".format(FN)])
-        indepth_metricTable.add_row(["False Positives, count_0_as_1", "{0:.0f}".format(FP)])
-        indepth_metricTable.add_row(["True Negatives, count_0_as_0", "{0:.0f}".format(TN)])
-        indepth_metricTable.add_row(["Real 1s ", "{0:.0f}".format(total_real_1s)])
-        indepth_metricTable.add_row(["Real 0s ", "{0:.0f}".format(total_real_0s)])
+        indepth_metricTable.add_row(
+            ["True Positives, count_1_as_1", "{0:.0f}".format(TP)])
+        indepth_metricTable.add_row(
+            ["False Negatives, count_1_as_0", "{0:.0f}".format(FN)])
+        indepth_metricTable.add_row(
+            ["False Positives, count_0_as_1", "{0:.0f}".format(FP)])
+        indepth_metricTable.add_row(
+            ["True Negatives, count_0_as_0", "{0:.0f}".format(TN)])
+        indepth_metricTable.add_row(
+            ["Real 1s ", "{0:.0f}".format(total_real_1s)])
+        indepth_metricTable.add_row(
+            ["Real 0s ", "{0:.0f}".format(total_real_0s)])
         print(metricTable)
         print(indepth_metricTable)
     return predicted
 
-#%%
-def log_time(key,start_time, end_time, phase,log_dict):
+# %%
+
+
+def log_time(key, start_time, end_time, phase, log_dict):
     """log_time [summary]
 
     Args:
@@ -778,8 +842,49 @@ def log_time(key,start_time, end_time, phase,log_dict):
     Returns:
         [list of dict]: [appends the data sends the list out]
     """
-    log_dict.append({"model":key, "phase":phase,"start_time":start_time ,"end_time":end_time, "total_time":end_time-start_time})
+    log_dict.append({"model": key, "phase": phase, "start_time": start_time,
+                     "end_time": end_time, "total_time": end_time-start_time})
     return log_dict
+
+
 def time_logger_save(log_dict, filename):
-    location= "logs/fit/runtime/"
-    pd.DataFrame(log_dict).to_csv(location+filename+".csv")
+    location = "logs/fit/runtime/"
+    pd.DataFrame(log_dict).to_csv(location + filename + ".csv")
+
+
+def evaluation_metrics_logger(eval_log_dict, key, threshold, hamming_loss, term_wise_accuracy, accuracy, micro_precision, micro_recall, micro_f1, macro_precision, macro_recall, macro_f1):
+    """[summary]
+
+    Args:
+        key ([type]): [name od model]
+        threshold ([type]): [threshold value]
+        hamming_loss ([type]): [hammin loss ]
+        term_wise_accuracy ([type]): [term wise accuracy]
+        micro_precision ([type]): [mirco precision]
+        micro_recall ([type]): [micro recall]
+        micro_f1 ([type]): [micro f1]
+        macro_precision ([type]): [macro precision]
+        macro_recall ([type]): [macro recall]
+        macro_f1 ([type]): [macro f1]
+    """
+    eval_log_dict.append(
+        {
+            "model": key,
+            "threshold": threshold,
+            "hamming_loss": hamming_loss,
+            "term_wise_accuracy": term_wise_accuracy,
+            "accuracy": accuracy,
+            "micro_precision": micro_precision,
+            "micro_recall": micro_recall,
+            "micro_f1": micro_f1,
+            "macro_precision": macro_precision,
+            "macro_recall": macro_recall,
+            "macro_f1": macro_f1
+        }
+    )
+    return eval_log_dict
+
+
+def eval_logger_save(log_dict, filename):
+    location = "logs/fit/eval/"
+    pd.DataFrame(log_dict).to_csv(location + filename + ".csv", index=False)
